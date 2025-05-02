@@ -1,0 +1,43 @@
+services:
+  agent-service:
+    build:
+      context: .
+      args:
+          APP_ENV: 'local'
+    image: orbio/agent-service:local
+    environment:
+      ENVIRONMENT: 'local'
+    ports:
+      - "8001:8001"
+    networks:
+      - service-grp-net
+      - agent-net
+    command: python manage.py runserver 0.0.0.0:8001
+    user: "${UID}:${GID}"
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env.local
+    volumes:
+      - ./:/opt/orbio/
+      - ~/.ipython:/home/orbio/.ipython
+
+  postgres:
+    image: postgres:13.4-alpine
+    environment:
+      POSTGRES_USER: orbio
+      POSTGRES_PASSWORD: orbio
+      POSTGRES_DB: orbio-db
+    command: -c fsync=off
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - agent-net
+
+networks:
+  agent-net: {}
+  service-grp-net:
+    external: true
+
+volumes:
+  pgdata: {}
