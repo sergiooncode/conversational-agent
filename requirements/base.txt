@@ -82,6 +82,7 @@ psycopg2-binary==2.9.10
     # via -r requirements/base.in
 pydantic==2.11.4
     # via
+    #   -r requirements/base.in
     #   mcp
     #   openai
     #   openai-agents

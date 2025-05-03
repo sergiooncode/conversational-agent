@@ -48,3 +48,12 @@ linting:
 .PHONY: test
 test:
 	$(COMPOSE_CMD) run --rm agent-service sh /opt/orbio/scripts/run-tests.sh $(name)
+
+.PHONY: create-django-superuser
+create-django-superuser:
+	$(COMPOSE_CMD) run --rm agent-service python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@example.com', 'password') if not User.objects.filter(username='admin').exists() else print('Superuser already exists');"
+
+.PHONY: collectstatic
+collectstatic: ## Collect static files in a single location.
+	$(COMPOSE_CMD) run -u 0 --rm agent-service python manage.py collectstatic --noinput
+

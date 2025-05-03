@@ -4,30 +4,45 @@ from django.db import models
 
 from agent.bots.models import BotFunction
 from agent.common.models import BaseModel
+from agent.services.llm.openai.agents import BASE_PROMPT
 
 
 BOT_FUNCTION_TO_PROMPT_MAP = {
     BotFunction.CUSTOMER_SUPPORT.value: {
         0: {
-            "name": "Customer Support Inquirer",
-            "instructions": (
-                "The customer has a problem so, using a corteous and pleasant "
-                "tone since the customer can be frustrated, determine from the "
-                "customer the following information: order number, problem "
-                "category, problem description, and urgency level. Once the customer "
-                "has provided all the information delegate the customer accordingly. "
-                "If the user has provided all the information, "
-                "handoff to the Customer Support Closer agent."
-            ),
+            "name": "Customer Support Info Collector",
+            "instructions": f"""{BASE_PROMPT}
+                The customer has a problem so, using a corteous and pleasant
+                tone since the customer can be frustrated, determine from the
+                customer the following information: order number, problem
+                category, problem description, and urgency level. Keep present
+                in your context the previous answers from the customer so you
+                don't repeat questions and come up as obnoxious. If the customer
+                doesn't provide problem category and urgency level, try to infer them from
+                the problem description and customer tone. Once the customer
+                has provided all the information delegate the customer accordingly to
+                the handoff agent.
+                """,
         },
         1: {
             "name": "Customer Support Closer",
-            "instructions": (
-                "When you enter into the picture the customer already provided the information "
-                "to handle the issue so close the conversation with the customer reassuring that "
-                "everything possible will be done to solve their issue and keep the customer updated "
-                "during the whole resolution process."
-            ),
+            "instructions": f"""{BASE_PROMPT}
+                When you enter into the picture the customer already provided the information.
+                If the user has provided all the information,
+                summarize it in JSON format like this:
+
+                {{
+                    "order_number": "84839303",
+                    "problem_category": "deposit refund delayed",
+                    "problem_description": "I haven't got the deposit refund",
+                    "urgency level": "high urgency"}}
+
+                Only output the JSON when you have all the details.
+                
+                Then reassure the customer that
+                everything possible will be done to solve their issue and that someone
+                from the right team will contact the customer by phone or email as soon 
+                as there is an update on the issue.""",
         },
     }
 }

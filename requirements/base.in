@@ -5,6 +5,7 @@ gunicorn
 httptools
 openai
 openai-agents
+pydantic
 psycopg2-binary
 structlog
 uvicorn
