@@ -25,7 +25,7 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 """,
         },
         1: {
-            "name": "Customer Support Closer",
+            "name": "Customer Support Info Structurer and Issue Closer",
             "instructions": f"""{BASE_PROMPT}
                 When you enter into the picture the customer already provided the information.
                 If the user has provided all the information,

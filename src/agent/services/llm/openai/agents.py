@@ -1,7 +1,7 @@
 from typing import List
 
 import structlog
-from agents import Agent, Runner, handoff, function_tool, AgentOutputSchema
+from agents import Agent, Runner, handoff, function_tool
 from agents import set_default_openai_key
 from django.conf import settings
 from agents.extensions.handoff_prompt import (
@@ -79,7 +79,7 @@ class AgentService:
     def _on_handoff_call(self, *args):
         logger.info("on_handoff_call", message=args)
 
-    async def run(self, user_input: str | None):
+    async def run(self, user_input: str | None = None):
         if not user_input:
             raise OpenAIAgentEmptyUserInputException()
 
