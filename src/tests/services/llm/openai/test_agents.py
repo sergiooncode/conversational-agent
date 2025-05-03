@@ -1,18 +1,31 @@
+import asyncio
 from unittest import mock
 from unittest.mock import MagicMock
 
 import pytest
 from django.test.utils import override_settings
 
-from agent.services.exceptions import OpenAIAgentNotConfiguredException, OpenAIAgentEmptyUserInputException
+from agent.services.exceptions import (
+    OpenAIAgentNotConfiguredException,
+    OpenAIAgentEmptyUserInputException,
+)
 from agent.services.llm.openai.agents import AgentService
+
+
+def async_return(result):
+    f = asyncio.Future()
+    f.set_result(result)
+    return f
 
 
 class TestOpenAIAgentService:
     @override_settings(OPENAPI_API_KEY="key")
     def test_agent_configured_successfully(self):
-        with mock.patch("agent.services.llm.openai.agents.Agent") as agent_mock_class,\
-                mock.patch("agent.services.llm.openai.agents.handoff") as handoff_mock:
+        with mock.patch(
+            "agent.services.llm.openai.agents.Agent"
+        ) as agent_mock_class, mock.patch(
+            "agent.services.llm.openai.agents.handoff"
+        ) as handoff_mock:
             mock_tool = MagicMock()
             mock_output_type = MagicMock()
             mock_handoff_function = MagicMock()
@@ -46,3 +59,21 @@ class TestOpenAIAgentService:
                 instructions="Some instructions",
             )
             await agent.run()
+
+    @pytest.mark.asyncio
+    @override_settings(OPENAPI_API_KEY="key")
+    async def test_agent_returns_result_when_received_user_input(self):
+        with mock.patch(
+            "agent.services.llm.openai.agents.Agent"
+        ) as agent_mock_class, mock.patch(
+            "agent.services.llm.openai.agents.Runner"
+        ) as runner_mock_class:
+            mock_result = "Agent: how can i help?"
+            runner_mock_class.run.return_value = async_return(mock_result)
+            agent = AgentService(
+                name="Customer Support Agent",
+                instructions="Some instructions",
+            )
+            actual_result = await agent.run(user_input="i have an issue")
+
+            assert actual_result == mock_result
