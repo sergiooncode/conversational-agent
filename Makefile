@@ -13,15 +13,22 @@ up: .env.local
 
 .PHONY: external-net
 external-net: SERVICE_GRP_NET=service-grp-net
-external-net: ## Create common external docker network (if missing).
-    # this network is shared across services and marked as external in docker compose (thus not managed by it).
-    @if["$$(docker network ls --filter name=$(SERVICE_GRP_NET) --format '{{ .Name }}')" != $(SERVICE_GRP_NET) ]; then \
+external-net:
+	@if [ "$$(docker network ls --filter name=$(SERVICE_GRP_NET) --format '{{ .Name }}')" != $(SERVICE_GRP_NET) ]; then \
        docker network create $(SERVICE_GRP_NET); \
     fi
 
 .PHONY: build
 build: ## Build docker image including base dependencies
-	TARGET_STAGE=$(target) $(COMPOSE_CMD) build --build-arg APP_ENV=$(app_env) $(service)
+	TARGET_STAGE=$(target) $(COMPOSE_CMD) build --build-arg APP_ENV=$(app_env) $(service) --progress plain
+
+.PHONY: check-migrations
+check-migrations: ## Check for missing database migrations
+	$(COMPOSE_CMD) run --rm agent-service python manage.py makemigrations --noinput --check
+
+.PHONY: migrate
+migrate: ## Run database migrations
+	$(COMPOSE_CMD) run --rm agent-service sh -c "python manage.py migrate --database=default --noinput"
 
 .PHONY: recreate
 recreate: .env.local build external-net up ## Make a new clean environment including development dependencies and initial data
@@ -37,3 +44,7 @@ down:
 .PHONY: linting
 linting:
 	$(COMPOSE_CMD) run --rm agent-service sh /opt/orbio/scripts/run-linting.sh $(fix)
+
+.PHONY: test
+test:
+	$(COMPOSE_CMD) run --rm agent-service sh /opt/orbio/scripts/run-tests.sh $(name)

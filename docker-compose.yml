@@ -12,7 +12,7 @@ services:
     networks:
       - service-grp-net
       - agent-net
-    command: python manage.py runserver 0.0.0.0:8001
+    command: python -m gunicorn -c ./agent/gunicorn_conf.py -k agent.uvicorn.UvicornWorker agent.asgi:application --reload
     user: "${UID}:${GID}"
     stdin_open: true
     tty: true
@@ -22,8 +22,8 @@ services:
       - ./:/opt/orbio/
       - ~/.ipython:/home/orbio/.ipython
 
-  postgres:
-    image: postgres:13.4-alpine
+  agent-postgres:
+    image: postgres:16-alpine
     environment:
       POSTGRES_USER: orbio
       POSTGRES_PASSWORD: orbio
@@ -33,6 +33,8 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - agent-net
+    ports:
+      - "5432:5432"
 
 networks:
   agent-net: {}

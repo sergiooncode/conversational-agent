@@ -16,6 +16,7 @@ COPY --chown=orbio:orbio ./requirements /opt/requirements
 
 RUN apt-get update --yes && \
     apt-get upgrade --yes && \
+    apt-get install --no-install-recommends --yes postgresql-client && \
     pip install --no-cache-dir --disable-pip-version-check pip-tools && \
     pip-sync /opt/requirements/base.txt --pip-args '--no-cache-dir --no-deps --disable-pip-version-check' && \
     rm -rf /var/lib/apt/lists/*
@@ -54,3 +55,5 @@ ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
 
 EXPOSE 8004
+
+CMD gunicorn -c ./agent/gunicorn_conf.py -k agent.uvicorn.UvicornWorker agent.asgi:application

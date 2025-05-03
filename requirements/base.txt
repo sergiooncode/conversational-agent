@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements/base.in
 #
+adrf==0.1.9
+    # via -r requirements/base.in
 annotated-types==0.7.0
     # via pydantic
 anyio==4.9.0
@@ -15,6 +17,8 @@ anyio==4.9.0
     #   starlette
 asgiref==3.8.1
     # via django
+async-property==0.2.2
+    # via adrf
 certifi==2025.4.26
     # via
     #   httpcore
@@ -29,17 +33,28 @@ colorama==0.4.6
 distro==1.9.0
     # via openai
 django==5.2
-    # via -r requirements/base.in
+    # via
+    #   -r requirements/base.in
+    #   adrf
+    #   djangorestframework
 django-environ==0.12.0
     # via -r requirements/base.in
+djangorestframework==3.16.0
+    # via adrf
 griffe==1.7.3
     # via openai-agents
+gunicorn==23.0.0
+    # via
+    #   -r requirements/base.in
+    #   uvicorn-worker
 h11==0.16.0
     # via
     #   httpcore
     #   uvicorn
 httpcore==1.0.9
     # via httpx
+httptools==0.6.4
+    # via -r requirements/base.in
 httpx==0.28.1
     # via
     #   mcp
@@ -60,6 +75,10 @@ openai==1.76.2
     #   -r requirements/base.in
     #   openai-agents
 openai-agents==0.0.14
+    # via -r requirements/base.in
+packaging==25.0
+    # via gunicorn
+psycopg2-binary==2.9.10
     # via -r requirements/base.in
 pydantic==2.11.4
     # via
@@ -87,6 +106,8 @@ starlette==0.46.2
     # via
     #   mcp
     #   sse-starlette
+structlog==25.3.0
+    # via -r requirements/base.in
 tqdm==4.67.1
     # via openai
 types-requests==2.32.0.20250328
@@ -107,4 +128,11 @@ urllib3==2.4.0
     #   requests
     #   types-requests
 uvicorn==0.34.2
-    # via mcp
+    # via
+    #   -r requirements/base.in
+    #   mcp
+    #   uvicorn-worker
+uvicorn-worker==0.3.0
+    # via -r requirements/base.in
+uvloop==0.21.0
+    # via -r requirements/base.in

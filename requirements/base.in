@@ -1,4 +1,12 @@
 django
 django-environ
+adrf
+gunicorn
+httptools
 openai
 openai-agents
+psycopg2-binary
+structlog
+uvicorn
+uvicorn_worker
+uvloop
