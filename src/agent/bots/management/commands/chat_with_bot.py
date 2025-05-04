@@ -22,7 +22,7 @@ from agent.services.conversational.openai.agents import (
     collected_information,
     CollectedInfo,
 )
-from agent.services.sentiment_analysis.detect import detect_frustration
+from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
 logger = structlog.get_logger(__name__)
 
@@ -127,7 +127,9 @@ class Command(BaseCommand):
         return self._stringify_conversation_history(conversation_history)
 
     def _detect_sentiment_and_add_label(self, user_input):
-        enriched_user_input = detect_frustration(user_input)
+        enriched_user_input = SentimentAnalysisDetectionService().detect_frustration(
+            user_input
+        )
         if "User Sentiment" in enriched_user_input:
             logger.info("detected_frustration_sentiment")
         return enriched_user_input

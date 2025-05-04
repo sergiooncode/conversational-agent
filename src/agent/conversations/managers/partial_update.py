@@ -35,18 +35,17 @@ class ConversationPartialUpdateManager:
             conversation_to_update, result, summary, sentiment_labelled_user_message
         )
 
+        if isinstance(result.final_output, CollectedInfo):
+            return (
+                f"I received your details {result.final_output.model_dump()}, thanks!"
+            )
+
         return result.final_output
 
     def _detect_and_add_sentiment_label(self):
         return SentimentAnalysisDetectionService().detect_frustration(
             self.context["message"]
         )
-
-    def _adapt_bot_message_when_structured_answer_received(self, result):
-        if isinstance(result.final_output, CollectedInfo):
-            return (
-                f"I received your details {result.final_output.model_dump()}, thanks!"
-            )
 
     def _parse_json_block(self, text):
         # Find content between ```json and ```
