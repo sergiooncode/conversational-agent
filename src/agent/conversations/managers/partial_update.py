@@ -1,7 +1,7 @@
 import json
 import re
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, List
 from uuid import UUID
 
 import structlog
@@ -27,7 +27,12 @@ class ConversationPartialUpdateManager:
     async def partial_update(self, conversation_id: UUID):
         conversation_to_update = await self._get_conversation(conversation_id)
         sentiment_labelled_user_message = self._detect_and_add_sentiment_label()
-        result = await self._run_conversation_service(sentiment_labelled_user_message)
+        conversation_history = self._get_stringified_conversation_history(
+            conversation_to_update, sentiment_labelled_user_message)
+        logger.info("conversation history")
+        logger.info(conversation_history)
+
+        result = await self._run_conversation_service(conversation_history)
         logger.info("result.final_output", message=result.final_output)
 
         summary = self._parse_summary(result)
@@ -43,6 +48,19 @@ class ConversationPartialUpdateManager:
             )
 
         return result.final_output
+
+    def _stringify_conversation_history(self, history: List, user_message: str):
+        conversation_history_text = f"{user_message}"
+        for msg in reversed(history):
+            role = msg["role"].capitalize()
+            content = msg["content"]
+            conversation_history_text += f"{role}: {content}\n\n"
+        return conversation_history_text
+
+    def _get_stringified_conversation_history(
+            self, conversation: Conversation, user_message: str):
+        conversation_history = conversation.raw_conversation
+        return self._stringify_conversation_history(conversation_history, user_message)
 
     def _detect_and_add_sentiment_label(self):
         return SentimentAnalysisDetectionService().detect_frustration(
@@ -91,8 +109,8 @@ class ConversationPartialUpdateManager:
             )
 
     async def _update_raw_conversation(self, conversation_to_update, result):
-        conversation_to_update.append(f"User: {self.context['message']}")
-        conversation_to_update.append(f"Assistant: {result.final_output}")
+        conversation_to_update.append(f"User: {self.context['message']}\n\n")
+        conversation_to_update.append(f"Assistant: {result.final_output}\n\n")
         await conversation_to_update.asave()
 
     async def _get_conversation(self, conversation_id: UUID):

@@ -1,8 +1,6 @@
-import json
 from unittest import mock
 from unittest.mock import AsyncMock
 
-from asgiref.sync import sync_to_async
 import pytest
 
 from agent.conversations.managers.partial_update import ConversationPartialUpdateManager
