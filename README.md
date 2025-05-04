@@ -14,9 +14,9 @@ make recreate
 make test
 ```
 
-## Create a conversation with the Customer Support of the fictional business
+## How to test
 
-- Create a conversation.
+- Create a conversation with the Customer Support of the fictional business.
 
 Note: The only valid functions is customer_support, but only customer_support
 

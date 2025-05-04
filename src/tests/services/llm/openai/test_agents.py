@@ -1,4 +1,3 @@
-import asyncio
 from unittest import mock
 from unittest.mock import MagicMock
 
@@ -10,12 +9,7 @@ from agent.services.exceptions import (
     OpenAIAgentEmptyUserInputException,
 )
 from agent.services.llm.openai.agents import AgentService
-
-
-def async_return(result):
-    f = asyncio.Future()
-    f.set_result(result)
-    return f
+from tests.conftest import async_return
 
 
 class TestOpenAIAgentService:

@@ -32,7 +32,7 @@ class ConversationViewSet(viewsets.GenericViewSet):
         try:
             conversation = ConversationCreationManager(context=validated_data).create()
         except Exception as e:
-            logger.error("conversation_view", message=e)
+            logger.error("conversation_view_post", message=e)
             raise APIException()
 
         output_serializer = ConversationCreateOutputSerializer(instance=conversation)
@@ -49,7 +49,8 @@ class ConversationViewSet(viewsets.GenericViewSet):
                 context=validated_data
             ).partial_update(conversation_id=pk)
         except Exception as e:
-            logger.error("conversation_view", message=e)
+            logger.error("conversation_view_partial_update", message=e)
+            raise APIException()
 
         output_serializer = ConversationPartialUpdateOutputSerializer(
             data={"bot_message": bot_message}
