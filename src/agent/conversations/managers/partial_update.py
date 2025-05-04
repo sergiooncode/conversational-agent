@@ -15,6 +15,7 @@ from agent.services.conversational.openai.agents import (
     CollectedInfo,
     collected_information,
 )
+from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
 logger = structlog.get_logger(__name__)
 
@@ -25,15 +26,21 @@ class ConversationPartialUpdateManager:
 
     async def partial_update(self, conversation_id: UUID):
         conversation_to_update = await self._get_conversation(conversation_id)
-        result = await self._run_conversation_service(self.context["message"])
+        sentiment_labelled_user_message = self._detect_and_add_sentiment_label()
+        result = await self._run_conversation_service(sentiment_labelled_user_message)
         logger.info("result.final_output", message=result)
 
         summary = self._parse_summary(result)
         await self._update_raw_conversation_and_summary(
-            conversation_to_update, result, summary, self.context["message"]
+            conversation_to_update, result, summary, sentiment_labelled_user_message
         )
 
         return result.final_output
+
+    def _detect_and_add_sentiment_label(self):
+        return SentimentAnalysisDetectionService().detect_frustration(
+            self.context["message"]
+        )
 
     def _adapt_bot_message_when_structured_answer_received(self, result):
         if isinstance(result.final_output, CollectedInfo):

@@ -18,8 +18,10 @@ FRUSTRATION_KEYWORDS = [
     "not happy",
 ]
 
+BLANK_STRING = " "
 
-class SentimentAnalysisDetection:
+
+class SentimentAnalysisDetectionService:
     def _cleanup_user_input(self, user_input: str):
         return user_input.replace(".", " ").replace(",", " ")
 
@@ -40,7 +42,7 @@ class SentimentAnalysisDetection:
 
     def detect_frustration(self, user_input: str):
         chunked_cleaned_user_input_words = self._cleanup_user_input(user_input).split(
-            " "
+            BLANK_STRING
         )
         found_keywords = self._find_frustration_keywords(
             chunked_cleaned_user_input_words

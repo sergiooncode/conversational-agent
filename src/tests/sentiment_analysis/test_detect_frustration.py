@@ -1,4 +1,4 @@
-from agent.services.sentiment_analysis.detect import SentimentAnalysisDetection
+from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
 
 def test_detect_frustration_returns_frustrated_label():
@@ -7,7 +7,9 @@ def test_detect_frustration_returns_frustrated_label():
         "deposit but i haven't got a refund of the deposit yet which is unacceptable."
     )
 
-    enriched_user_input = SentimentAnalysisDetection().detect_frustration(user_input)
+    enriched_user_input = SentimentAnalysisDetectionService().detect_frustration(
+        user_input
+    )
 
     assert (
         enriched_user_input
@@ -24,7 +26,9 @@ def test_detect_high_frustration_returns_highly_frustrated_label():
         "refund of the deposit yet which is unacceptable."
     )
 
-    enriched_user_input = SentimentAnalysisDetection().detect_frustration(user_input)
+    enriched_user_input = SentimentAnalysisDetectionService().detect_frustration(
+        user_input
+    )
 
     assert (
         enriched_user_input
@@ -39,6 +43,8 @@ def test_detect_frustration_returns_no_frustration_detected_label():
         "The issue was that I rented a car a few weeks ago and i didn't received "
         "an email with the bills and closure details."
     )
-    enriched_user_input = SentimentAnalysisDetection().detect_frustration(user_input)
+    enriched_user_input = SentimentAnalysisDetectionService().detect_frustration(
+        user_input
+    )
 
     assert enriched_user_input == user_input
