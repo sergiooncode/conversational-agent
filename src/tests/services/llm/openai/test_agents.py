@@ -64,9 +64,7 @@ class TestOpenAIAgentService:
     @pytest.mark.asyncio
     @override_settings(OPENAPI_API_KEY="key")
     async def test_agent_returns_result_when_received_user_input(self):
-        with mock.patch(
-            "agent.services.llm.openai.agents.Agent"
-        ), mock.patch(
+        with mock.patch("agent.services.llm.openai.agents.Agent"), mock.patch(
             "agent.services.llm.openai.agents.Runner"
         ) as runner_mock_class:
             mock_result = "Agent: how can i help?"
@@ -76,6 +74,7 @@ class TestOpenAIAgentService:
                 instructions="Some instructions",
             )
             actual_result = await agent.run(
-                input="User: i have an issue\nAssistant: how can i help?\n")
+                input="User: i have an issue\nAssistant: how can i help?\n"
+            )
 
             assert actual_result == mock_result

@@ -5,6 +5,7 @@ from adrf import viewsets
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.exceptions import APIException
 
 from agent.conversations.managers.creation import ConversationCreationManager
 from agent.conversations.managers.partial_update import ConversationPartialUpdateManager
@@ -32,6 +33,7 @@ class ConversationViewSet(viewsets.GenericViewSet):
             conversation = ConversationCreationManager(context=validated_data).create()
         except Exception as e:
             logger.error("conversation_view", message=e)
+            raise APIException()
 
         output_serializer = ConversationCreateOutputSerializer(instance=conversation)
 

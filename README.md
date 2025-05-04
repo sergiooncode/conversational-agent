@@ -76,7 +76,8 @@ to give an answer even if the handoffs feature is used. That's the reason why a 
 was added.
 - Postgres and storing conversation and extracted data in JSON
 - Using OpenAI Agents SDK for conversation flow.
-- Async use in API endpoints
+- Async use in PATCH /api/conversations/<id>/ endpoint because Runner.run is async. I realized later there is
+a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 - 
 
 ## Description of potential improvements

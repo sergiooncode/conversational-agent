@@ -4,12 +4,13 @@ import re
 from uuid import UUID
 
 import structlog
-from agents import (HandoffOutputItem,
-                    ItemHelpers,
-                    MessageOutputItem,
-                    ToolCallItem,
-                    ToolCallOutputItem
-                    )
+from agents import (
+    HandoffOutputItem,
+    ItemHelpers,
+    MessageOutputItem,
+    ToolCallItem,
+    ToolCallOutputItem,
+)
 from django.core.management import BaseCommand, CommandParser
 
 from agent.bots.models import BotFunction, Bot
@@ -64,8 +65,7 @@ class Command(BaseCommand):
 
     def _get_agent_response(self, conversation_history):
         loop = asyncio.get_event_loop()
-        result = loop.run_until_complete(
-            self.run_agent(conversation_history))
+        result = loop.run_until_complete(self.run_agent(conversation_history))
         return result
 
     def _parse_json_block(self, text):
@@ -94,13 +94,13 @@ class Command(BaseCommand):
     def _update_raw_conversation_and_summary(
         self, conversation, result, summary, user_input
     ):
-        conversation.raw_conversation.append(
-            {"role": "user", "content": user_input})
+        conversation.raw_conversation.append({"role": "user", "content": user_input})
         casted_result = result.final_output
         if isinstance(result.final_output, CollectedInfo):
             casted_result = result.final_output.model_dump()
         conversation.raw_conversation.append(
-            {"role": "assistant", "content": casted_result})
+            {"role": "assistant", "content": casted_result}
+        )
         conversation.save()
         if summary:
             conversation.summary = summary
@@ -140,7 +140,9 @@ class Command(BaseCommand):
                     print("beginning ------------------------")
                     agent_name = new_item.agent.name
                     if isinstance(new_item, MessageOutputItem):
-                        print(f"{agent_name}: {ItemHelpers.text_message_output(new_item)}")
+                        print(
+                            f"{agent_name}: {ItemHelpers.text_message_output(new_item)}"
+                        )
                     elif isinstance(new_item, HandoffOutputItem):
                         print(
                             f"Handed off from {new_item.source_agent.name} to {new_item.target_agent.name}"
@@ -150,7 +152,9 @@ class Command(BaseCommand):
                     elif isinstance(new_item, ToolCallOutputItem):
                         print(f"{agent_name}: Tool call output: {new_item.output}")
                     else:
-                        print(f"{agent_name}: Skipping item: {new_item.__class__.__name__}")
+                        print(
+                            f"{agent_name}: Skipping item: {new_item.__class__.__name__}"
+                        )
                     print("end ------------------------")
 
                 summary = self._parse_summary(result)
@@ -159,10 +163,13 @@ class Command(BaseCommand):
                     conversation, result, summary, user_input
                 )
                 conversation_history = self._get_stringified_conversation_history(
-                    conversation.id)
+                    conversation.id
+                )
 
                 print(f"Conversation history: \n{conversation_history}")
             except Exception as e:
-                import traceback;traceback.print_exc()
+                import traceback
+
+                traceback.print_exc()
                 logger.warning("bots_chat_with_bot_cmd", message=str(e))
                 continue
