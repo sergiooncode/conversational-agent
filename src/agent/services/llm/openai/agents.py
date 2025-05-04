@@ -77,16 +77,16 @@ class AgentService:
         return self._agent
 
     def _on_handoff_call(self, *args):
-        logger.info("on_handoff_call", message=args)
+        logger.info("agent_service_on_handoff_call", message=args)
 
-    async def run(self, user_input: str | None = None):
-        if not user_input:
+    async def run(self, input: str | None = None):
+        if not input:
             raise OpenAIAgentEmptyUserInputException()
 
         try:
             result = await Runner.run(
                 self._agent,
-                user_input,
+                input,
             )
             return result
         except Exception as e:

@@ -10,8 +10,11 @@ from agent.services.llm.openai.agents import BASE_PROMPT
 BOT_FUNCTION_TO_PROMPT_MAP = {
     BotFunction.CUSTOMER_SUPPORT.value: {
         0: {
-            "name": "Customer Support Info Collector",
+            "name": "Customer Support Triaging and Info Collector",
             "instructions": f"""{BASE_PROMPT}
+                Don't generate comments impersonating the customer.
+                The input you are getting is all conversation history with newer
+                messages first.
                 The customer has a problem so, using a corteous and pleasant
                 tone since the customer can be frustrated, determine from the
                 customer the following information: order number, problem
@@ -25,8 +28,11 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 """,
         },
         1: {
-            "name": "Customer Support Info Structurer and Issue Closer",
+            "name": "Customer Support Info Structurer",
             "instructions": f"""{BASE_PROMPT}
+                Don't generate comments impersonating the customer.
+                The input you are getting is all conversation history with newer
+                messages first.
                 When you enter into the picture the customer already provided the information.
                 If the user has provided all the information,
                 summarize it in JSON format like this:
@@ -38,8 +44,18 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                     "urgency level": "high urgency"}}
 
                 Only output the JSON when you have all the details.
-                
-                Then reassure the customer that
+                Once you have the information needed to generate the summary just
+                handoff the customer to the next agent.
+            """,
+        },
+        2: {
+            "name": "Customer Support User Reassurance and Send Off",
+            "instructions": f"""{BASE_PROMPT}
+                Don't generate comments impersonating the customer.
+                The input you are getting is all conversation history with newer
+                messages first.
+                The previous agent collected all needed information from the customer and
+                handed off the customer to you so just reassure the customer that
                 everything possible will be done to solve their issue and that someone
                 from the right team will contact the customer by phone or email as soon 
                 as there is an update on the issue.""",

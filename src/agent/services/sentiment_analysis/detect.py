@@ -1,0 +1,15 @@
+FRUSTRATION_KEYWORDS = [
+    "unacceptable",
+    "angry",
+    "frustrated",
+    "frustrating",
+    "ridiculous",
+    "disappointed",
+    "i want a refund",
+    "i'm tired of",
+    "this is the third time",
+    "still waiting",
+    "why haven't you",
+    "no response",
+    "not happy",
+]

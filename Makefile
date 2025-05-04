@@ -31,7 +31,7 @@ migrate: ## Run database migrations
 	$(COMPOSE_CMD) run --rm agent-service sh -c "python manage.py migrate --database=default --noinput"
 
 .PHONY: recreate
-recreate: .env.local build external-net up ## Make a new clean environment including development dependencies and initial data
+recreate: .env.local build external-net up migrate ## Make a new clean environment including development dependencies and initial data
 
 .PHONY: logs
 logs:
