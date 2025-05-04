@@ -119,4 +119,10 @@ Note: the raw_conversation field is a list and the messages order is the lower t
 
 - Sample text to speech
 
-[▶️ Listen to the audio](https://raw.githubusercontent.com/sergiooncode/conversational-agent/blob/main/blueprint/daa314c2-3723-4b63-afff-a5430616416a.mp3)
+Click [here](https://github.com/sergiooncode/conversational-agent/blob/main/blueprint/daa314c2-3723-4b63-afff-a5430616416a.mp3)
+to download the raw file which then can be played on your computer. To download click on the arrow down button on
+the far right seen below:
+
+![Sample 1](blueprint/capabilities_sample.png)
+
+
