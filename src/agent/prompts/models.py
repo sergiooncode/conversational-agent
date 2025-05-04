@@ -11,6 +11,7 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
     BotFunction.CUSTOMER_SUPPORT.value: {
         0: {
             "name": "Customer Support Triaging and Info Collector",
+            "short_name": "triaging_and_info_collected",
             "instructions": f"""{BASE_PROMPT}
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer
@@ -29,6 +30,7 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
         },
         1: {
             "name": "Customer Support Info Structurer",
+            "short_name": "info_structurer",
             "instructions": f"""{BASE_PROMPT}
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer
@@ -50,6 +52,7 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
         },
         2: {
             "name": "Customer Support User Reassurance and Send Off",
+            "short_name": "user_reassurance_and_send_off",
             "instructions": f"""{BASE_PROMPT}
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer
