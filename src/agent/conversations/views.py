@@ -8,7 +8,10 @@ from rest_framework.response import Response
 from rest_framework.exceptions import APIException, NotFound
 
 from agent.conversations.exceptions import ConversationNotFound
-from agent.conversations.managers.creation import ConversationCreationManager
+from agent.conversations.managers.creation import (
+    ConversationCreationManager,
+    ConversationCreateFollowupSpeechManager,
+)
 from agent.conversations.managers.partial_update import ConversationPartialUpdateManager
 from agent.conversations.serializers.input import (
     ConversationCreateInputSerializer,
@@ -22,9 +25,7 @@ from agent.conversations.serializers.output import (
 logger = structlog.get_logger(__name__)
 
 
-class ConversationViewSet(viewsets.GenericViewSet):
-    serializer_class = ConversationCreateOutputSerializer
-
+class ConversationViewSet(viewsets.ViewSet):
     def post(self, request: Request, *args, **kwargs):
         input_serializer = ConversationCreateInputSerializer(data=request.data)
         input_serializer.is_valid(raise_exception=True)
@@ -55,9 +56,6 @@ class ConversationViewSet(viewsets.GenericViewSet):
                 detail="Conversation not found",
             )
         except Exception as e:
-            import traceback
-
-            traceback.print_exc()
             logger.error("conversation_view_partial_update", message=e)
             raise APIException()
 
@@ -68,3 +66,16 @@ class ConversationViewSet(viewsets.GenericViewSet):
         validated_data = output_serializer.validated_data
 
         return Response(data=validated_data, status=status.HTTP_200_OK)
+
+
+class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
+    def post(self, request: Request, pk: UUID, *args, **kwargs):
+        try:
+            ConversationCreateFollowupSpeechManager().partial_update(conversation_id=pk)
+        except Exception as e:
+            logger.error("conversation_view_post", message=e)
+            raise APIException()
+
+        return Response(
+            data={"detail": "Speech from text created"}, status=status.HTTP_201_CREATED
+        )

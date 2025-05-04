@@ -4,14 +4,14 @@ from django.db import models
 
 from agent.bots.models import BotFunction
 from agent.common.models import BaseModel
-from agent.services.llm.openai.agents import BASE_PROMPT
+from agent.services.conversational.openai.agents import BASE_PROMPT
 
 
 BOT_FUNCTION_TO_PROMPT_MAP = {
     BotFunction.CUSTOMER_SUPPORT.value: {
         0: {
             "name": "Customer Support Triaging and Info Collector",
-            "short_name": "triaging_and_info_collected",
+            "short_name": "triaging_and_info_collector",
             "instructions": f"""{BASE_PROMPT}
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer

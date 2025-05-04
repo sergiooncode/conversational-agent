@@ -8,7 +8,7 @@ from agent.services.exceptions import (
     OpenAIAgentNotConfiguredException,
     OpenAIAgentEmptyUserInputException,
 )
-from agent.services.llm.openai.agents import AgentService
+from agent.services.conversational.openai.agents import AgentService
 from tests.conftest import async_return
 
 
@@ -16,9 +16,9 @@ class TestOpenAIAgentService:
     @override_settings(OPENAPI_API_KEY="key")
     def test_agent_configured_successfully(self):
         with mock.patch(
-            "agent.services.llm.openai.agents.Agent"
+            "agent.services.conversational.openai.agents.Agent"
         ) as agent_mock_class, mock.patch(
-            "agent.services.llm.openai.agents.handoff"
+            "agent.services.conversational.openai.agents.handoff"
         ) as handoff_mock:
             mock_tool = MagicMock()
             mock_output_type = MagicMock()
@@ -58,8 +58,10 @@ class TestOpenAIAgentService:
     @pytest.mark.asyncio
     @override_settings(OPENAPI_API_KEY="key")
     async def test_agent_returns_result_when_received_user_input(self):
-        with mock.patch("agent.services.llm.openai.agents.Agent"), mock.patch(
-            "agent.services.llm.openai.agents.Runner"
+        with mock.patch(
+            "agent.services.conversational.openai.agents.Agent"
+        ), mock.patch(
+            "agent.services.conversational.openai.agents.Runner"
         ) as runner_mock_class:
             mock_result = "Agent: how can i help?"
             runner_mock_class.run.return_value = async_return(mock_result)

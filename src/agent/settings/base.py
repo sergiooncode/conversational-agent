@@ -162,3 +162,6 @@ LOGGING = {
 
 # OPEN AI
 OPENAPI_API_KEY = env.str("OPENAPI_API_KEY", default="key")
+
+# ELEVEN LABS
+ELEVEN_LABS_API_KEY = env.str("ELEVEN_LABS_API_KEY", default="key")

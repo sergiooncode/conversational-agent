@@ -20,3 +20,9 @@ class ConversationCreationManager:
         human_user = HumanUser.objects.create()
         conversation = Conversation.objects.create(bot=bot, human_user=human_user)
         return conversation
+
+
+@dataclass
+class ConversationCreateFollowupSpeechManager:
+    def create(self):
+        return

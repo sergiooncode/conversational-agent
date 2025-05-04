@@ -10,7 +10,7 @@ from agent.bots.models import BotFunction
 from agent.conversations.exceptions import ConversationNotFound
 from agent.conversations.models import Conversation
 from agent.prompts.models import BOT_FUNCTION_TO_PROMPT_MAP
-from agent.services.llm.openai.agents import (
+from agent.services.conversational.openai.agents import (
     AgentService,
     CollectedInfo,
     collected_information,

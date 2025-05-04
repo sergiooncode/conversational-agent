@@ -81,15 +81,15 @@ a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 
 ### Bonus points
 - 
-- Sentiment analysis was added in a very simple way by just trying to detect sentiment keywords (frustrated, dissapointed, etc)
-in customer messages and enriching that message with the sentiment information in structured format
-(like [User Sentiment: highly frustrated]... + message).
+- Sentiment analysis detection was added in a very simplistic way by just trying to find sentiment keywords
+(frustrated, dissapointed, etc) in customer messages and enriching that message with the
+sentiment information in structured format (like [User Sentiment: highly frustrated]... + message).
 
 ## Description of potential improvements
 - Store conversations as the product scales. Postgres JSONB field allows max size 1 GB.
 https://www.dbvis.com/thetable/everything-you-need-to-know-about-the-postgres-jsonb-data-type/#:~:text=What%20is%20the%20size%20limit,text%20%2C%20which%20is%201%20GB.
 
-- It makes sense to have a model HumanUser but probably it shouldn't be part of this agent service.
+- The API has no authentication and that's not right. 
 
 
 ## Sample conversations demonstrating the bot's capabilities

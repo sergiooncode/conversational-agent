@@ -1,5 +1,6 @@
 import asyncio
 import pytest
+import pytest_asyncio
 from rest_framework.test import APIClient
 
 from agent.bots.models import Bot
@@ -12,12 +13,12 @@ def api_client():
     yield APIClient()
 
 
-@pytest.fixture
-def valid_conversation():
-    bot = Bot.objects.create(function="CUSTOMER_SUPPORT")
-    human_user = HumanUser.objects.create()
-    conversation = Conversation.objects.create(bot=bot, human_user=human_user)
-    return conversation
+@pytest_asyncio.fixture
+async def valid_conversation():
+    bot = await Bot.objects.acreate(function="CUSTOMER_SUPPORT")
+    human_user = await HumanUser.objects.acreate()
+    conversation = await Conversation.objects.acreate(bot=bot, human_user=human_user)
+    yield conversation
 
 
 @pytest.fixture

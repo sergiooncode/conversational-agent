@@ -1,6 +1,9 @@
 from django.urls import path
 
-from agent.conversations.views import ConversationViewSet
+from agent.conversations.views import (
+    ConversationCreateFollowupSpeechViewSet,
+    ConversationViewSet,
+)
 
 urlpatterns = [
     path(
@@ -12,5 +15,10 @@ urlpatterns = [
         "conversations/<uuid:pk>/",
         ConversationViewSet.as_view({"patch": "partial_update"}),
         name="conversations_partial_update",
+    ),
+    path(
+        "conversations/<uuid:pk>/follow-up-speech",
+        ConversationCreateFollowupSpeechViewSet.as_view({"post": "post"}),
+        name="conversations_followupspeech_create",
     ),
 ]

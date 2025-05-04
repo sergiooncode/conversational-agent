@@ -17,7 +17,7 @@ from agent.bots.models import BotFunction, Bot
 from agent.conversations.models import Conversation
 from agent.human_users.models import HumanUser
 from agent.prompts.models import BOT_FUNCTION_TO_PROMPT_MAP
-from agent.services.llm.openai.agents import (
+from agent.services.conversational.openai.agents import (
     AgentService,
     collected_information,
     CollectedInfo,
@@ -126,8 +126,11 @@ class Command(BaseCommand):
             exit(1)
         return self._stringify_conversation_history(conversation_history)
 
-    def _detect_sentiment_and_label(self, user_input):
-        return detect_frustration(user_input)
+    def _detect_sentiment_and_add_label(self, user_input):
+        enriched_user_input = detect_frustration(user_input)
+        if "User Sentiment" in enriched_user_input:
+            logger.info("detected_frustration_sentiment")
+        return enriched_user_input
 
     def handle(self, *args, **options) -> str | None:
         bot = Bot.objects.create(function=BotFunction.CUSTOMER_SUPPORT)
@@ -137,7 +140,7 @@ class Command(BaseCommand):
         while True:
             try:
                 user_input = input("User: ")
-                enriched_user_input = self._detect_sentiment_and_label(user_input)
+                enriched_user_input = self._detect_sentiment_and_add_label(user_input)
                 if not conversation_history:
                     conversation_history = f"User: {enriched_user_input}\n\n"
 
@@ -167,7 +170,7 @@ class Command(BaseCommand):
                 summary = self._parse_summary(result)
 
                 self._update_raw_conversation_and_summary(
-                    conversation, result, summary, user_input
+                    conversation, result, summary, enriched_user_input
                 )
                 conversation_history = self._get_stringified_conversation_history(
                     conversation.id

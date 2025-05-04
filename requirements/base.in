@@ -1,12 +1,14 @@
 django
 django-environ
 adrf
+elevenlabs
 gunicorn
 httptools
 openai
 openai-agents
 pydantic
 psycopg2-binary
+sentence-transformers
 structlog
 uvicorn
 uvicorn_worker
