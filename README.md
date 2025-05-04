@@ -123,6 +123,6 @@ Click [here](https://github.com/sergiooncode/conversational-agent/blob/main/blue
 to download the raw file which then can be played on your computer. To download click on the arrow down button on
 the far right seen below:
 
-![Sample 1](blueprint/capabilities_sample.png)
+![Sample 1](blueprint/download_raw_file.png)
 
 
