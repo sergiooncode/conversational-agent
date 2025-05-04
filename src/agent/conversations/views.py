@@ -5,8 +5,9 @@ from adrf import viewsets
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import APIException, NotFound
 
+from agent.conversations.exceptions import ConversationNotFound
 from agent.conversations.managers.creation import ConversationCreationManager
 from agent.conversations.managers.partial_update import ConversationPartialUpdateManager
 from agent.conversations.serializers.input import (
@@ -48,6 +49,11 @@ class ConversationViewSet(viewsets.GenericViewSet):
             bot_message = await ConversationPartialUpdateManager(
                 context=validated_data
             ).partial_update(conversation_id=pk)
+        except ConversationNotFound as e:
+            logger.warning("conversation_view_partial_update_not_found", message=e)
+            raise NotFound(
+                detail="Conversation not found",
+            )
         except Exception as e:
             logger.error("conversation_view_partial_update", message=e)
             raise APIException()

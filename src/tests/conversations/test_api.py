@@ -97,6 +97,22 @@ class TestConversationsPartialUpdateViewSet:
         assert response.status_code == 400
         assert response.json() == {"message": ["This field is required."]}
 
+    def test_partial_update_conversation_returns_404_when_conversation_not_found(
+        self, api_client, valid_bot_message
+    ):
+        with mock.patch(
+            "agent.conversations.managers.partial_update.AgentService"
+        ) as agent_service_mock:
+            agent_service_mock.run.return_value = async_return(valid_bot_message)
+            response = api_client.patch(
+                path=f"{self.base_endpoint}16b6353d-f3ff-4abe-8b17-c4dd596171f9/",
+                data={"message": "i have an issue"},
+                formt="json",
+            )
+
+        assert response.status_code == 404
+        assert response.json() == {"detail": "Conversation not found"}
+
     def test_partial_update_conversation_returns_500_when_creation_manager_raises_exception(
         self, api_client, valid_bot_message
     ):

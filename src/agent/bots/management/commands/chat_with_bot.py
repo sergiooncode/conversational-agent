@@ -103,6 +103,7 @@ class Command(BaseCommand):
         )
         conversation.save()
         if summary:
+            logger.info("update_raw_conversation_and_summary", message="summary saved")
             conversation.summary = summary
             conversation.save()
 
