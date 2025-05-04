@@ -28,7 +28,7 @@ class ConversationPartialUpdateManager:
         conversation_to_update = await self._get_conversation(conversation_id)
         sentiment_labelled_user_message = self._detect_and_add_sentiment_label()
         result = await self._run_conversation_service(sentiment_labelled_user_message)
-        logger.info("result.final_output", message=result)
+        logger.info("result.final_output", message=result.final_output)
 
         summary = self._parse_summary(result)
         await self._update_raw_conversation_and_summary(
@@ -36,6 +36,8 @@ class ConversationPartialUpdateManager:
         )
 
         if isinstance(result.final_output, CollectedInfo):
+            logger.info("adapting response")
+            logger.info(result.final_output.model_dump())
             return (
                 f"I received your details {result.final_output.model_dump()}, thanks!"
             )
