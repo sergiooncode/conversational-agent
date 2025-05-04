@@ -56,7 +56,7 @@ history up to that point in the conversation:
 
 ### Diagram
 
-
+![Diagram](blueprint/diagram.png)
 
 ### Domain modelling:
 - The Intelligent Conversational Agent application was split in 4 domains: conversations, bots,
@@ -64,7 +64,7 @@ human users and prompts. Since Django was used, 4 applications were created so t
 evolve somehow independently although some of them are related to each other mainly through FK
 relations in DB.
 
-![](../../../../Desktop/Screenshots/Screenshot 2025-05-04 at 9.09.38 AM.png)
+![Domains](blueprint/domains.png)
 
 ## Explanation of key design decisions
 
@@ -92,4 +92,4 @@ https://www.dbvis.com/thetable/everything-you-need-to-know-about-the-postgres-js
 
 Note: the raw_conversation field is a list and the messages order is the lower the index in the list the earlier the message
 
-![](../../../../Desktop/Screenshots/Screenshot 2025-05-04 at 11.40.20 AM.png)
+![Sample 1](blueprint/capabilities_sample.png)
