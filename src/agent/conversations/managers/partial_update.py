@@ -13,6 +13,7 @@ from agent.prompts.models import BOT_FUNCTION_TO_PROMPT_MAP
 from agent.services.llm.openai.agents import (
     AgentService,
     CollectedInfo,
+    collected_information,
 )
 
 logger = structlog.get_logger(__name__)
@@ -25,6 +26,7 @@ class ConversationPartialUpdateManager:
     async def partial_update(self, conversation_id: UUID):
         conversation_to_update = await self._get_conversation(conversation_id)
         result = await self._run_conversation_service(self.context["message"])
+        logger.info("result.final_output", message=result)
 
         summary = self._parse_summary(result)
         await self._update_raw_conversation_and_summary(
@@ -32,6 +34,12 @@ class ConversationPartialUpdateManager:
         )
 
         return result.final_output
+
+    def _adapt_bot_message_when_structured_answer_received(self, result):
+        if isinstance(result.final_output, CollectedInfo):
+            return (
+                f"I received your details {result.final_output.model_dump()}, thanks!"
+            )
 
     def _parse_json_block(self, text):
         # Find content between ```json and ```
@@ -56,7 +64,7 @@ class ConversationPartialUpdateManager:
             logger.warning("", message=f"Not parsed correctly {e}")
         return summary
 
-    def _update_raw_conversation_and_summary(
+    async def _update_raw_conversation_and_summary(
         self, conversation, result, summary, user_message
     ):
         conversation.raw_conversation.append({"role": "user", "content": user_message})
@@ -66,11 +74,13 @@ class ConversationPartialUpdateManager:
         conversation.raw_conversation.append(
             {"role": "assistant", "content": casted_result}
         )
-        conversation.save()
+        await conversation.asave()
         if summary:
-            logger.info("update_raw_conversation_and_summary", message="summary saved")
             conversation.summary = summary
-            conversation.save()
+            await conversation.asave()
+            logger.info(
+                "partial_update_manager_update_summary", message="summary saved"
+            )
 
     async def _update_raw_conversation(self, conversation_to_update, result):
         conversation_to_update.append(f"User: {self.context['message']}")
@@ -84,6 +94,14 @@ class ConversationPartialUpdateManager:
             raise ConversationNotFound()
 
     async def _run_conversation_service(self, user_message: str):
+        agent_service_2 = AgentService(
+            name=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][2][
+                "name"
+            ],
+            instructions=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][
+                2
+            ]["instructions"],
+        )
         agent_service_1 = AgentService(
             name=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][1][
                 "name"
@@ -91,6 +109,9 @@ class ConversationPartialUpdateManager:
             instructions=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][
                 1
             ]["instructions"],
+            tools=[collected_information],
+            output_type=CollectedInfo,
+            handoffs=[agent_service_2],
         )
         agent_service_0 = AgentService(
             name=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][0][

@@ -55,6 +55,9 @@ class ConversationViewSet(viewsets.GenericViewSet):
                 detail="Conversation not found",
             )
         except Exception as e:
+            import traceback
+
+            traceback.print_exc()
             logger.error("conversation_view_partial_update", message=e)
             raise APIException()
 

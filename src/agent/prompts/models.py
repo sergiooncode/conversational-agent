@@ -16,6 +16,14 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer
                 messages first.
+                Keep an eye for labels with format like:
+                [User Sentiment: highly frustrated]
+                
+                with adjectives frustrated or highly frustrated since they
+                indicate that the user. When you see those empathize with the frustration
+                of the customer and reassure them that everything possible will
+                be done to fix the issue. 
+                
                 The customer has a problem so, using a corteous and pleasant
                 tone since the customer can be frustrated, determine from the
                 customer the following information: order number, problem
@@ -35,6 +43,14 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer
                 messages first.
+                Keep an eye for labels with format like:
+                [User Sentiment: highly frustrated]
+                
+                with adjectives frustrated or highly frustrated since they
+                indicate that the user. When you see those empathize with the frustration
+                of the customer and reassure them that everything possible will
+                be done to fix the issue.
+
                 When you enter into the picture the customer already provided the information.
                 If the user has provided all the information,
                 summarize it in JSON format like this:
@@ -57,6 +73,15 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 Don't generate comments impersonating the customer.
                 The input you are getting is all conversation history with newer
                 messages first.
+
+                Keep an eye for labels with format like:
+                [User Sentiment: highly frustrated]
+                
+                with adjectives frustrated or highly frustrated since they
+                indicate that the user. When you see those empathize with the frustration
+                of the customer and reassure them that everything possible will
+                be done to fix the issue.
+
                 The previous agent collected all needed information from the customer and
                 handed off the customer to you so just reassure the customer that
                 everything possible will be done to solve their issue and that someone

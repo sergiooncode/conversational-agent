@@ -22,6 +22,7 @@ from agent.services.llm.openai.agents import (
     collected_information,
     CollectedInfo,
 )
+from agent.services.sentiment_analysis.detect import detect_frustration
 
 logger = structlog.get_logger(__name__)
 
@@ -125,6 +126,9 @@ class Command(BaseCommand):
             exit(1)
         return self._stringify_conversation_history(conversation_history)
 
+    def _detect_sentiment_and_label(self, user_input):
+        return detect_frustration(user_input)
+
     def handle(self, *args, **options) -> str | None:
         bot = Bot.objects.create(function=BotFunction.CUSTOMER_SUPPORT)
         human_user = HumanUser.objects.create()
@@ -133,8 +137,10 @@ class Command(BaseCommand):
         while True:
             try:
                 user_input = input("User: ")
+                enriched_user_input = self._detect_sentiment_and_label(user_input)
                 if not conversation_history:
-                    conversation_history = f"{user_input}\n\n"
+                    conversation_history = f"User: {enriched_user_input}\n\n"
+
                 result = self._get_agent_response(conversation_history)
                 print(f"Assistant: {result.final_output}\n\n")
                 for new_item in result.new_items:

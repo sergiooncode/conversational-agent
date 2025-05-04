@@ -78,7 +78,12 @@ was added.
 - Using OpenAI Agents SDK for conversation flow.
 - Async use in PATCH /api/conversations/<id>/ endpoint because Runner.run is async. I realized later there is
 a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
+
+### Bonus points
 - 
+- Sentiment analysis was added in a very simple way by just trying to detect sentiment keywords (frustrated, dissapointed, etc)
+in customer messages and enriching that message with the sentiment information in structured format
+(like [User Sentiment: highly frustrated]... + message).
 
 ## Description of potential improvements
 - Store conversations as the product scales. Postgres JSONB field allows max size 1 GB.
