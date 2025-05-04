@@ -35,7 +35,7 @@ class TestConversationsCreateViewSet:
             ]
         }
 
-    def test_create_conversation_returns_500_when_creation_manager_raises(
+    def test_create_conversation_returns_500_when_creation_manager_raises_exception(
         self, api_client
     ):
         with mock.patch(
@@ -76,3 +76,41 @@ class TestConversationsPartialUpdateViewSet:
 
         assert response.status_code == 200
         assert response.json() == {"bot_message": valid_bot_message}
+
+    def test_partial_update_conversation_returns_400_when_no_message(
+        self, api_client, valid_bot_message
+    ):
+        with mock.patch(
+            "agent.conversations.views.ConversationPartialUpdateManager"
+        ) as manager_mock:
+            manager_mock_instance = MagicMock()
+            manager_mock_instance.partial_update.return_value = async_return(
+                valid_bot_message
+            )
+            manager_mock.return_value = manager_mock_instance
+            response = api_client.patch(
+                path=f"{self.base_endpoint}16b6353d-f3ff-4abe-8b17-c4dd596171f9/",
+                data={},
+                formt="json",
+            )
+
+        assert response.status_code == 400
+        assert response.json() == {"message": ["This field is required."]}
+
+    def test_partial_update_conversation_returns_500_when_creation_manager_raises_exception(
+        self, api_client, valid_bot_message
+    ):
+        with mock.patch(
+            "agent.conversations.views.ConversationPartialUpdateManager"
+        ) as manager_mock:
+            manager_mock_instance = MagicMock()
+            manager_mock_instance.partial_update.side_effect = async_return(Exception())
+            manager_mock.return_value = manager_mock_instance
+            response = api_client.patch(
+                path=f"{self.base_endpoint}16b6353d-f3ff-4abe-8b17-c4dd596171f9/",
+                data={"message": "i have an issue"},
+                formt="json",
+            )
+
+        assert response.status_code == 500
+        assert response.json() == {"detail": "A server error occurred."}
