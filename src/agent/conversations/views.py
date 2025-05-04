@@ -71,11 +71,17 @@ class ConversationViewSet(viewsets.ViewSet):
 class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
     def post(self, request: Request, pk: UUID, *args, **kwargs):
         try:
-            ConversationCreateFollowupSpeechManager().partial_update(conversation_id=pk)
+            speech_recording_id = ConversationCreateFollowupSpeechManager().create(
+                conversation_id=pk)
+        except ConversationNotFound as e:
+            logger.warning("conversation_view_post_followup_speech_not_found", message=e)
+            raise NotFound(
+                detail="Conversation not found",
+            )
         except Exception as e:
-            logger.error("conversation_view_post", message=e)
+            logger.error("conversation_view_post_followup_speech_post", message=e)
             raise APIException()
 
         return Response(
-            data={"detail": "Speech from text created"}, status=status.HTTP_201_CREATED
+            data={"speech_id": speech_recording_id}, status=status.HTTP_201_CREATED
         )

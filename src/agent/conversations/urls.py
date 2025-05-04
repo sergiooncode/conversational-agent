@@ -17,7 +17,7 @@ urlpatterns = [
         name="conversations_partial_update",
     ),
     path(
-        "conversations/<uuid:pk>/follow-up-speech",
+        "conversations/<uuid:pk>/follow-up-speech/",
         ConversationCreateFollowupSpeechViewSet.as_view({"post": "post"}),
         name="conversations_followupspeech_create",
     ),

@@ -28,8 +28,8 @@ class TextToSpeechService:
         )
         return response
 
-    def _save_stream_to_file(self, response):
-        save_file_path = f"{uuid.uuid4()}.mp3"
+    def _save_stream_to_file(self, response, speech_id: str):
+        save_file_path = f"../resources/{speech_id}.mp3"
         # Writing the audio to a file
         with open(save_file_path, "wb") as f:
             for chunk in response:
@@ -40,5 +40,6 @@ class TextToSpeechService:
         return save_file_path
 
     def convert_and_save_to_file(self, text: str):
+        speech_recording_id = uuid.uuid4()
         response = self._convert(text)
-        self._save_stream_to_file(response)
+        return self._save_stream_to_file(response, speech_recording_id)

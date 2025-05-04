@@ -44,11 +44,28 @@ curl -X PATCH http://localhost:8001/api/conversations/9701444a-9618-428c-9a24-ec
   -d '{"message": "i have an issue"}'
 ```
 
-It should return a response like below following certain pre-configured instructions and the conversation
+It returns a response like below following certain pre-configured instructions and the conversation
 history up to that point in the conversation:
 ```
 {
 "bot_message": "I'm here to help! Could you please provide me with a bit more information? Let me know your order number, the category of the problem, a brief description of the issue, and how urgent it is. That way, I can assist you better!"
+}
+```
+
+- A human user can request a follow up call (a speech recording for now) on a conversation previously
+created:
+
+```
+curl -X POST http://localhost:8001/api/conversations/9701444a-9618-428c-9a24-eca0636fbc9d/follow-up-speech/
+```
+
+It returns a speech recording id containing a follow up speech on the conversation whose id is passed,
+the actual recording file is saved in the `resources` folder at the top level from where
+it can be played:
+
+```
+{
+"speech_id": "a84ba83d-b27e-43d5-9706-cfac53ea37bc"
 }
 ```
 
@@ -99,3 +116,7 @@ https://www.dbvis.com/thetable/everything-you-need-to-know-about-the-postgres-js
 Note: the raw_conversation field is a list and the messages order is the lower the index in the list the earlier the message
 
 ![Sample 1](blueprint/capabilities_sample.png)
+
+- Sample text to speech
+
+[Sample 2](blueprint/daa314c2-3723-4b63-afff-a5430616416a.mp3)
