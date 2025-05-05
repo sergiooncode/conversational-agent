@@ -95,6 +95,7 @@ class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
                 detail="Conversation summary not found",
             )
         except Exception as e:
+            import traceback;traceback.print_exc()
             logger.error("conversation_view_post_followup_speech_post", message=e)
             raise APIException()
 
