@@ -30,7 +30,7 @@ an endpoint to send/add a message to a conversation which returns a response fro
 on the OpenAI API platform accessed through the Agents SDK.
 
 - The Conversational flow relies on a 3 agent architecture. Since the Customer Support is the use case the agents
-generated are: `Customer Support Triaging and Info Collector`, `Customer Support Info Structurer` and
+defined are: `Customer Support Triaging and Info Collector`, `Customer Support Info Structurer` and
 `Customer Support User Reassurance and Send Off`
 
 - In the TTS flow there is only one endpoint to create a speech recording with a follow-up to a given conversation
