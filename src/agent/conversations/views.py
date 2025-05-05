@@ -7,7 +7,10 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException, NotFound, NotAuthenticated
 
-from agent.conversations.exceptions import ConversationNotFound, ConversationSummaryDoesntExist
+from agent.conversations.exceptions import (
+    ConversationNotFound,
+    ConversationSummaryDoesntExist,
+)
 from agent.conversations.managers.creation import (
     ConversationCreationManager,
     ConversationCreateFollowupSpeechManager,

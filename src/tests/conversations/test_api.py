@@ -130,3 +130,27 @@ class TestConversationsPartialUpdateViewSet:
 
         assert response.status_code == 500
         assert response.json() == {"detail": "A server error occurred."}
+
+
+class TestConversationCreateFollowupSpeechViewSet:
+    base_endpoint = "/api/conversations/"
+
+    def test_create_conversation_followup_speech_successfully(
+        self, api_client, valid_bot_message
+    ):
+        with mock.patch(
+            "agent.conversations.views.ConversationCreateFollowupSpeechManager"
+        ) as manager_mock:
+            manager_mock_instance = MagicMock()
+            manager_mock_instance.create.return_value = (
+                "daa314c2-3723-4b63-afff-a5430616416a.mp3"
+            )
+            manager_mock.return_value = manager_mock_instance
+            response = api_client.post(
+                path=f"{self.base_endpoint}16b6353d-f3ff-4abe-8b17-c4dd596171f9/follow-up-speech/"
+            )
+
+        assert response.status_code == 201
+        assert response.json() == {
+            "speech_id": "daa314c2-3723-4b63-afff-a5430616416a.mp3"
+        }
