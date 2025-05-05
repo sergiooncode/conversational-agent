@@ -14,6 +14,7 @@ from agent.services.conversational.openai.agents import (
 from agent.services.conversational.openai.multiagent.controller import (
     CUSTOMER_SUPPORT_AGENT_MAP,
 )
+from agent.services.rag.sbert_net.service import RagService
 from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
 logger = structlog.get_logger(__name__)
@@ -26,8 +27,11 @@ class ConversationPartialUpdateManager:
     async def partial_update(self, conversation_id: UUID):
         conversation_to_update = await self._get_conversation(conversation_id)
         sentiment_labelled_user_message = self._detect_and_add_sentiment_label()
+        rag_enriched_sentiment_labelled_user_msg = self._rag_enrich_with_answers(
+            sentiment_labelled_user_message
+        )
         conversation_history = self._get_stringified_conversation_history(
-            conversation_to_update, sentiment_labelled_user_message
+            conversation_to_update, rag_enriched_sentiment_labelled_user_msg
         )
         logger.info("conversation history")
         logger.info(conversation_history)
@@ -37,7 +41,7 @@ class ConversationPartialUpdateManager:
 
         summary = self._parse_summary(result)
         await self._update_raw_conversation_and_summary(
-            conversation_to_update, result, summary, sentiment_labelled_user_message
+            conversation_to_update, result, summary, rag_enriched_sentiment_labelled_user_msg
         )
 
         if isinstance(result.final_output, CollectedInfo):
@@ -48,6 +52,10 @@ class ConversationPartialUpdateManager:
             )
 
         return result.final_output
+
+    def _rag_enrich_with_answers(self, user_message: str):
+        service = RagService()
+        return service.get_relevant_answers(user_message)
 
     def _stringify_conversation_history(self, history: List, user_message: str):
         conversation_history_text = f"{user_message}"

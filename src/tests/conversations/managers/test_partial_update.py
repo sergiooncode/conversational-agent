@@ -17,13 +17,12 @@ class TestConversationPartialUpdateManager:
     @pytest.mark.asyncio
     async def test_partial_update_successful(self, valid_conversation):
         with mock.patch(
-            "agent.conversations.managers.partial_update.AgentService",
-            return_value=AsyncMock(),
-        ) as agent_service_mock:
-            agent_instance_mock = AsyncMock()
-            agent_service_mock.return_value = agent_instance_mock
+            "agent.conversations.managers.partial_update.CUSTOMER_SUPPORT_AGENT_MAP"
+        ) as agent_map_mock:
+            mock_instance = AsyncMock()
+            agent_map_mock.__getitem__.return_value = mock_instance
             result_mock = AsyncMock()
-            agent_instance_mock.run.return_value = result_mock
+            mock_instance.run.return_value = result_mock
             result_mock.final_output = await async_return("how can i help?")
             bot_message = await ConversationPartialUpdateManager(
                 context={"message": "i have an issue"}
@@ -48,13 +47,12 @@ class TestConversationPartialUpdateManager:
         self, valid_conversation
     ):
         with mock.patch(
-            "agent.conversations.managers.partial_update.AgentService",
-            return_value=AsyncMock(),
-        ) as agent_service_mock:
-            agent_instance_mock = AsyncMock()
-            agent_service_mock.return_value = agent_instance_mock
+            "agent.conversations.managers.partial_update.CUSTOMER_SUPPORT_AGENT_MAP"
+        ) as agent_map_mock:
+            mock_instance = AsyncMock()
+            agent_map_mock.__getitem__.return_value = mock_instance
             result_mock = AsyncMock()
-            agent_instance_mock.run.return_value = result_mock
+            mock_instance.run.return_value = result_mock
             result_mock.final_output = await async_return("how can i help?")
             bot_message = await ConversationPartialUpdateManager(
                 context={"message": "i have an issue and i am very annoyed"}
@@ -83,13 +81,12 @@ class TestConversationPartialUpdateManager:
         all_needed_info_user_message,
     ):
         with mock.patch(
-            "agent.conversations.managers.partial_update.AgentService",
-            return_value=AsyncMock(),
-        ) as agent_service_mock:
-            agent_instance_mock = AsyncMock()
-            agent_service_mock.return_value = agent_instance_mock
+            "agent.conversations.managers.partial_update.CUSTOMER_SUPPORT_AGENT_MAP"
+        ) as agent_map_mock:
+            mock_instance = AsyncMock()
+            agent_map_mock.__getitem__.return_value = mock_instance
             result_mock = AsyncMock()
-            agent_instance_mock.run.return_value = result_mock
+            mock_instance.run.return_value = result_mock
             result_mock.final_output = await async_return(
                 CollectedInfo(**structured_result_final_output)
             )
