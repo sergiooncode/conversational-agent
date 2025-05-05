@@ -80,6 +80,10 @@ because it sounds as if the agents coordinate themselves. The consequence of the
 coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
 why a multi-agent controller was added.
 
+- Regarding the context and memory of the agents the conversation history is passed to the agent that runs to
+generate an answer. That conversation history is formatted in a structured way like `User: <message>` or
+`Assistant: <message>`.
+
 - Postgres and storing conversation messages in JSON. The field `raw_conversation` is a JSONB field with list
 as default. After doing some research the append of an item in that field should be efficient. Also the
 JSONB field has a max size that seems high enough (1 GB).
@@ -177,7 +181,7 @@ it can be played:
 
 Note: the raw_conversation field is a list and the messages order is the lower the index in the list the earlier the message
 
-![Sample 1](blueprint/capabilities_sample.png)
+![Sample 1](blueprint/conversation_capabilities_sample.png)
 
 - Sample text to speech
 

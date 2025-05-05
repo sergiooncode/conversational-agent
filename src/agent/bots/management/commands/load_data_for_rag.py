@@ -28,8 +28,14 @@ class Command(BaseCommand):
         query_embedding = model.encode(query, normalize_embeddings=True)
 
         scores = util.cos_sim(query_embedding, answer_embeddings)[0]
+        print(scores)
+
         top_k = 3  # how many to retrieve
-        top_indices = np.argsort(scores)[-top_k:][::-1]
+        top_k = min(top_k, len(scores))
+        if top_k == 0:
+            top_indices = []
+        else:
+            top_indices = np.argsort(scores)[-top_k:][::-1]
 
         relevant_answers = [answers[i] for i in top_indices]
 

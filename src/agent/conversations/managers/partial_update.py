@@ -15,6 +15,7 @@ from agent.services.conversational.openai.agents import (
     CollectedInfo,
     collected_information,
 )
+from agent.services.conversational.openai.multiagent.controller import CUSTOMER_SUPPORT_AGENT_MAP
 from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
 logger = structlog.get_logger(__name__)
@@ -150,4 +151,4 @@ class ConversationPartialUpdateManager:
             ]["instructions"],
             handoffs=[agent_service_1],
         )
-        return await agent_service_0.run(user_message)
+        return await CUSTOMER_SUPPORT_AGENT_MAP["triaging_and_info_collector"].run(user_message)

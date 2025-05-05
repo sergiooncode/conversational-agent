@@ -42,16 +42,7 @@ CUSTOMER_SUPPORT_AGENT_MAP = {
 
 
 class MultiAgentController:
-    def __init__(self, agent_map):
-        """
-        agent_map: dict of agent name -> agent instance
-        Example:
-        {
-            "support": agent_support,
-            "billing": agent_billing,
-            "urgent": agent_urgent
-        }
-        """
+    def __init__(self, agent_map=CUSTOMER_SUPPORT_AGENT_MAP):
         self.agents = agent_map
 
     def run(self, agent_name, message, history=None):
