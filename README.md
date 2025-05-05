@@ -43,7 +43,8 @@ which is very limited. More definition on the exact use case would be necessary 
 further development needed and maybe a proper call with a TTS agent could set be up.
 
 - The conversations as the human user sends messages and the agent answers are stored in PostgreSQL.
-The summary is extracted by the agent `Customer Support Info Structurer` using the `tools` feature of OpenAI Agents
+When the human user provides all the info required by `Customer Support Triaging and Info Collector` the summary
+is extracted by the agent `Customer Support Info Structurer` using the `tools` feature of OpenAI Agents
 SDK. The summary is saved in a JSON field called `summary` as part of the conversation model instance.
 
 ### Diagram
