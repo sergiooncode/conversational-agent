@@ -90,45 +90,47 @@ is indicated that the conversation history is part of the input they receive so 
 - The agent `Customer Support Triaging and Info Collector` which is the first to run already receives the
 whole conversation history.
 
-- I use Postgres to store conversation messages in a JSONB field. The field `raw_conversation` is a JSONB field with list
-as default. After doing some research the append of an item in that field should be efficient. Also the
-JSONB field has a max size that seems high enough (1 GB).
+- I use Postgres to store conversation messages in a JSONB field, the field is called `raw_conversation` and it has a list
+as default so as the application runs messages are appended. After doing some research that append of an item which
+is such like `{"user": "<message>", "assistant": "<message>"}` seems to be efficient from a performance point of
+view. Also the JSONB field has a max size that seems high enough (1 GB).
 
-- Async use in PATCH `/api/conversations/<id>/` endpoint because Runner.run is async. I realized later there is
+- Async is used in PATCH `/api/conversations/<id>/` endpoint because `Runner.run` is async. I realized later there is
 a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 
 ### Bonus points
 
 - Sentiment analysis detection was added in a very simplistic way by just trying to find sentiment keywords
 (frustrated, dissapointed, etc) in customer messages and enriching that message with the
-sentiment information in structured format (like [User Sentiment: highly frustrated]... + message).
+sentiment information as a label in structured format like [User Sentiment: highly frustrated]... + message.
 
-- I started working on RAG to improve the agent system answers. I found a knowledge base with customer
-support answers on Kaggle. I researched a "cheap" way to implement RAG using a OS LLM model and loading
+- I started working on RAG to improve the agent system answers. On Kaggle I found a knowledge base with customer
+support answers from accounts on X. I researched a "cheap" way to implement RAG using an Open Source LLM model and loading
 the embeddings in memory.
 
 - The RAG service would compare the user's comment with embeddings of
-the answers in the mentioned knowledge base using a simple LLM called all-MiniLM-L6-v2. A RAG service could be
-defined which would load answers embeddings in memory (in the future a Vector DB API service could be
+the answers in the mentioned knowledge base using a simple LLM model called `all-MiniLM-L6-v2`. A RAG service could be
+developed which would load answers embeddings in memory (in the future a Vector DB could be
 used), then the `ConversationPartialUpdateManager` would call that RAG service.
 
-- The implementation of multi turn memory was not implemented but the building blocks which are
+- The implementation of multi turn memory was not done but the building blocks which are
 conversation history passed to each agent and proper multi agent routing are in place.
 
 - In order to implement multiple language support the language used in the user message should be detected
-using Python package `langdetect` or similar. Beforehand in the instructions/prompt of all agents
-a line like `If the user speaks French. Always respond in French.` (and same way for all languages supported)
-and then injecting a structured label like `[User Language: French]` or similar in the input to `Runner.run`
-of the agent
+using Python package like `langdetect` or similar. Beforehand in the instructions/prompt of all agents
+a line like `If the user speaks French. Always respond in French.` (and same way for all languages supported) should
+be added and then for each user message a structured label like `[User Language: French]` or similar should be injected
+in the input to `Runner.run` of the agent.
 
 
 ## Description of potential improvements
 
-- Storing conversations as the product scales. Postgres JSONB field allows max size 1 GB.
+- Storing conversations as the product scales. Postgres JSONB field which allows max size 1 GB but probably
+older conversations could be offloaded to a more cost-effective storage like S3.
 
-- The API has no authentication and that's not right. It's should be first identified who is the
+- The API has no authentication and that's not right. It should be first identified who is the
 user and who is the client of the API, whoever owns the authentication method artifact (API key, token, etc)
-will be the client since through that authentication method we know is "them" using the API.
+will be the client since through that authentication method we know is an authenticated client of the API.
 
 - I had plans for the Prompt Django model but it's currently not used. The prompts for the 3-agent system are mainly static.
 If the prompts were to be generated dynamically maybe the Prompt Django model could come in handy. 
