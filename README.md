@@ -80,7 +80,7 @@ instructions, and in the case of OpenAI Agents SDK tools and output type), the m
 instructions given in the instructions/prompt.
 
 - The agents, at least on the OpenAI agents framework, are stateless. The handoffs feature in the SDK is slightly misleading
-because it sounds as if the agents coordinate themselves and hand off task to other agents but it's not 100% like that.
+because it sounds as if the agents coordinate themselves and hand off tasks to other agents but it's not 100% like that.
 The consequence of the above is that they have to be
 coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
 why a multi-agent controller was added towards the end of the development although it needs more testing.
