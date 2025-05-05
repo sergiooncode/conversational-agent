@@ -66,7 +66,7 @@ relations in DB.
 in prompts and architecture of agents.
 
 - Using OpenAI Agents SDK for conversation flow was a decision made based on some research where some
-sources praised the OpenAI and the LLM model gpt-4o specifically for the Customer Support use case. I debated with 
+sources praised the OpenAI and the LLM model `gpt-4o` specifically for the Customer Support use case. I debated with 
 myself between OpenAI and Anthropic platforms and I landed on OpenAI also because both the Agents SDK official
 docs and the examples in the official OpenAI repo caught my eye for the good.
 
