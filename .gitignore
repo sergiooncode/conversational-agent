@@ -179,3 +179,4 @@ cython_debug/
 .python-version
 
 openai_example.py
+.DS_Store
