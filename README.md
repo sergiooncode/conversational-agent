@@ -52,6 +52,7 @@ The summary extracted
 ![Diagram](blueprint/diagram.png)
 
 ### Domain modelling:
+
 - The Intelligent Conversational Agent application was split in 4 domains: conversations, bots,
 human users and prompts. Since Django was used, 4 applications were created so the 4 domains can
 evolve somehow independently although some of them are related to each other mainly through FK
@@ -61,15 +62,28 @@ relations in DB.
 
 ## Explanation of key design decisions
 
+- Using OpenAI Agents SDK for conversation flow was a decision. I debated with myself between OpenAI and Anthropic
+platforms and I landed on OpenAI because both the Agents SDK official docs and the examples in the official
+OpenAI repo caught my eye.
+
+- The SDK seems to be evolving and its documentation with it.
+Also it seems that they use have something called `agentkit` as part of the SDK and some examples online
+show it but it's not in the official docs.
+
 - Structure output from agents based on LLMs. LLM produce natural language and, unless specific instructions are
 given to it and features of the AI platform are used (specific prompt instructions, tools, output type),
 doesn't abide by the instructions by default.
-- The agents, at least on OpenAI agents framework, have to be coordinated it so the right agent is used
+
+- The agents, at least on OpenAI agents framework, are stateless. The handoffs feature is slightly misleading
+because it sounds as if the agents coordinate themselves. The consequence of the above is that they have to be coordinated so the right agent is used
 to give an answer even if the handoffs feature is used. That's the reason why a multi-agent controller
 was added.
-- Postgres and storing conversation and extracted data in JSON
-- Using OpenAI Agents SDK for conversation flow.
-- Async use in PATCH /api/conversations/<id>/ endpoint because Runner.run is async. I realized later there is
+
+- Postgres and storing conversation messages in JSON. The field raw_conversation is a JSONB field with list
+as default. After some research the append should be efficient. Also the JSONB field has a max size that seems
+high enough (1 GB).
+
+- Async use in PATCH `/api/conversations/<id>/` endpoint because Runner.run is async. I realized later there is
 a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 
 ### Bonus points
@@ -78,11 +92,18 @@ a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 (frustrated, dissapointed, etc) in customer messages and enriching that message with the
 sentiment information in structured format (like [User Sentiment: highly frustrated]... + message).
 
-## Description of potential improvements
-- Store conversations as the product scales. Postgres JSONB field allows max size 1 GB.
-https://www.dbvis.com/thetable/everything-you-need-to-know-about-the-postgres-jsonb-data-type/#:~:text=What%20is%20the%20size%20limit,text%20%2C%20which%20is%201%20GB.
+- I started working on RAG to improve the agent system answers. I found a 
 
-- The API has no authentication and that's not right. 
+## Description of potential improvements
+
+- Storing conversations as the product scales. Postgres JSONB field allows max size 1 GB.
+
+- The API has no authentication and that's not right. It's should be first identified who is t
+
+- I had plans for the Prompt Django model but it's currently not used. The prompts for the 3-agent system are mainly static.
+If the prompts were to be generated dynamically maybe the Prompt Django model could come in handy. 
+
+- Increasing the test coverage would be necessary.
 
 ## How to test
 

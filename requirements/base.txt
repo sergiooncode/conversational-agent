@@ -175,6 +175,7 @@ threadpoolctl==3.6.0
     # via scikit-learn
 tokenizers==0.21.1
     # via transformers
+--extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.2.2
     # via sentence-transformers
 tqdm==4.67.1
