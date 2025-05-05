@@ -89,7 +89,8 @@ class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
             )
         except ConversationSummaryDoesntExist as e:
             logger.warning(
-                "conversation_view_post_followup_speech_summary_not_found", message=str(e)
+                "conversation_view_post_followup_speech_summary_not_found",
+                message=str(e),
             )
             raise NotFound(
                 detail="Conversation summary not found",

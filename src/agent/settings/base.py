@@ -169,11 +169,11 @@ ELEVEN_LABS_API_KEY = env.str("ELEVEN_LABS_API_KEY", default="key")
 
 def text_to_speech_text_template(summary):
     return (
-            f"Calling regarding the order {summary['order_number']} which involved an "
-            f"{summary['problem_category']} issue you faced with severity {summary['urgency_level']} which "
-            f"was described as {summary['problem_description']}. "
-            f"According to our records the issue is on the path to resolution and in a period "
-            f"of 2-3 days you will receive an email from the corresponding department confirming "
-            f"the steps forward on that resolution. We appreciate your business. Thanks for your "
-            f"patience!"
-        )
+        f"Calling regarding the order {summary['order_number']} which involved an "
+        f"{summary['problem_category']} issue you faced with severity {summary['urgency_level']} which "
+        f"was described as {summary['problem_description']}. "
+        f"According to our records the issue is on the path to resolution and in a period "
+        f"of 2-3 days you will receive an email from the corresponding department confirming "
+        f"the steps forward on that resolution. We appreciate your business. Thanks for your "
+        f"patience!"
+    )
