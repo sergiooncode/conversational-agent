@@ -88,7 +88,7 @@ why a multi-agent controller was added towards the end of the development althou
 - Regarding the context and memory of the agents, the whole conversation history up to the point when the service gets a new message from the user
 is currently passed as input, together with the received user message, to the agent that runs to generate an answer. That conversation history is formatted
 in a structured way like a string `User: <message>\nAssistant: <message>...`. That history string that is passed to the agents is
-generated in reverse order with the earlier messages to the end of that string. In the prompts for the 3 agents
+generated in reverse order with the earlier messages being at the end of that string. In the prompts for the 3 agents
 is indicated that the conversation history is part of the input they receive so the agent can rely on it.
 
 - The agent `Customer Support Triaging and Info Collector` which is the first to run already receives the
