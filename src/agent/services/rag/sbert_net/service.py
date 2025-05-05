@@ -9,11 +9,10 @@ ANSWERS_TO_RETRIEVE_MAX_NUMBER = 5
 
 class RagService:
     def __init__(self):
-        import os;print(os.getcwd())
-        data = np.load(
-            "../resources/answer_embeddings.npz",
-            allow_pickle=True
-        )
+        import os
+
+        print(os.getcwd())
+        data = np.load("../resources/answer_embeddings.npz", allow_pickle=True)
         self._answer_embeddings = data["embeddings"]
         self._model = SentenceTransformer("all-MiniLM-L6-v2")
         self._raw_answers = []
@@ -34,6 +33,8 @@ class RagService:
 
         relevant_answers = [self._raw_answers[i] for i in top_indices]
 
-        context_text = "\n".join([f"Relevant answer: {ans}" for ans in relevant_answers])
+        context_text = "\n".join(
+            [f"Relevant answer: {ans}" for ans in relevant_answers]
+        )
 
         return f"{context_text}\n\nUser: {user_message}"

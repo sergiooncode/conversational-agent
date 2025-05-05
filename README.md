@@ -108,7 +108,7 @@ a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 (frustrated, dissapointed, etc) in customer messages and enriching that message with the
 sentiment information as a label in structured format like `[User Sentiment: highly frustrated]\nUser: <message>`.
 
-- I started working on RAG to improve the agent system answers. On Kaggle I found a knowledge base with customer
+- RAG was added to improve the agent system answers. On Kaggle I found a knowledge base with customer
 support answers from accounts on X. I researched a "cheap" way to implement RAG using an Open Source LLM model and loading
 the embeddings in memory.
 
@@ -211,5 +211,11 @@ to download the raw file which then can be played on your computer. To download 
 the far right seen below:
 
 ![Sample 1](blueprint/download_raw_file.png)
+
+- Sample conversation between the Customer Support agent and a human user
+with RAG applied using this dataset from [knowledge](https://www.kaggle.com/datasets/thoughtvector/customer-support-on-twitter)
+of Customer Support on Twitter:
+
+![Sample 1](blueprint/conversation_capabilities_rag_sample.png)
 
 

@@ -27,9 +27,11 @@ class Command(BaseCommand):
         print(answer_embeddings)
 
         # Save
-        np.savez("answer_embeddings.npz",
-                 embeddings=answer_embeddings,
-                 answers=np.array(answers, dtype=object))
+        np.savez(
+            "answer_embeddings.npz",
+            embeddings=answer_embeddings,
+            answers=np.array(answers, dtype=object),
+        )
 
         print("Saved embeddings and answers.")
 
@@ -68,6 +70,6 @@ class Command(BaseCommand):
             print(ans)
 
     def handle(self, *args, **options) -> str | None:
-        #self._save_answer_embeddings()
+        # self._save_answer_embeddings()
         service = RagService()
         print(service.get_relevant_answers("i have an issue"))

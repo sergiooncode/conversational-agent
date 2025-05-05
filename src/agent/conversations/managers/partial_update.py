@@ -41,7 +41,10 @@ class ConversationPartialUpdateManager:
 
         summary = self._parse_summary(result)
         await self._update_raw_conversation_and_summary(
-            conversation_to_update, result, summary, rag_enriched_sentiment_labelled_user_msg
+            conversation_to_update,
+            result,
+            summary,
+            rag_enriched_sentiment_labelled_user_msg,
         )
 
         if isinstance(result.final_output, CollectedInfo):
