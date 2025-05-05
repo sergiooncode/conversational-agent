@@ -106,7 +106,7 @@ a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 
 - Sentiment analysis detection was added in a very simplistic way by just trying to find sentiment keywords
 (frustrated, dissapointed, etc) in customer messages and enriching that message with the
-sentiment information as a label in structured format like [User Sentiment: highly frustrated]... + message.
+sentiment information as a label in structured format like `[User Sentiment: highly frustrated]\nUser: <message>`.
 
 - I started working on RAG to improve the agent system answers. On Kaggle I found a knowledge base with customer
 support answers from accounts on X. I researched a "cheap" way to implement RAG using an Open Source LLM model and loading
