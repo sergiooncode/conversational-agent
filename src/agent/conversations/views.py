@@ -7,7 +7,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException, NotFound, NotAuthenticated
 
-from agent.conversations.exceptions import ConversationNotFound
+from agent.conversations.exceptions import ConversationNotFound, ConversationSummaryDoesntExist
 from agent.conversations.managers.creation import (
     ConversationCreationManager,
     ConversationCreateFollowupSpeechManager,
@@ -83,6 +83,13 @@ class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
             )
             raise NotFound(
                 detail="Conversation not found",
+            )
+        except ConversationSummaryDoesntExist as e:
+            logger.warning(
+                "conversation_view_post_followup_speech_summary_not_found", message=e
+            )
+            raise NotFound(
+                detail="Conversation summary not found",
             )
         except Exception as e:
             logger.error("conversation_view_post_followup_speech_post", message=e)

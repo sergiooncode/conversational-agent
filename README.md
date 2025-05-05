@@ -2,7 +2,9 @@
 
 ## Setup instructions
 
-Note: an environment variable OPENAPI_API_KEY with a valid API key for the OpenAI API platform is necessary.
+Note: an environment variable OPENAPI_API_KEY with a valid API key for the OpenAI API platform is necessary. Also
+an environment variable ELEVEN_LABS_API_KEY is necessary to use Text-to-Speech on the
+`/api/conversations/<conversation_id>/follow-up-speech/` endpoint.
 
 - Run command:
 ```
