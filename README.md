@@ -72,7 +72,7 @@ docs and the examples in the official OpenAI repo caught my eye for the good.
 
 - The OpenAI Agents SDK seems to be evolving and its documentation with it.
 Also it seems that they used to have something called `agentkit` as part of the SDK and some examples online
-reference it but it's not in the official docs.
+reference it but it's not in the official docs which caused a bit of confusion during development.
 
 - Structured output from agents based on LLMs is not a trivial thing to accomplish. LLMd produce natural language 
 and, unless specific instructions are given to the model and features of the AI platform used (specific prompt
