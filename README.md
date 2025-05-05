@@ -45,7 +45,8 @@ but this is very limited. More definition on the exact use case would be necessa
 further development are needed and maybe a proper call with a TTS agent could set up.
 
 - The conversations as the human user sends messages and the agent answers are stored in PostgreSQL.
-The summary extracted
+The summary extracted by the agent `Customer Support Info Structurer` using the tools feature of OpenAI Agents
+SDK.
 
 ### Diagram
 
