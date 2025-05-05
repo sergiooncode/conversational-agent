@@ -45,8 +45,8 @@ but this is very limited. More definition on the exact use case would be necessa
 further development are needed and maybe a proper call with a TTS agent could set up.
 
 - The conversations as the human user sends messages and the agent answers are stored in PostgreSQL.
-The summary extracted by the agent `Customer Support Info Structurer` using the tools feature of OpenAI Agents
-SDK.
+The summary is extracted by the agent `Customer Support Info Structurer` using the tools feature of OpenAI Agents
+SDK which then is saved in a summary JSON field of the conversation model instance.
 
 ### Diagram
 
@@ -76,9 +76,9 @@ given to it and features of the AI platform are used (specific prompt instructio
 doesn't abide by the instructions by default.
 
 - The agents, at least on OpenAI agents framework, are stateless. The handoffs feature is slightly misleading
-because it sounds as if the agents coordinate themselves. The consequence of the above is that they have to be coordinated so the right agent is used
-to give an answer even if the handoffs feature is used. That's the reason why a multi-agent controller
-was added.
+because it sounds as if the agents coordinate themselves. The consequence of the above is that they have to be
+coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
+why a multi-agent controller was added.
 
 - Postgres and storing conversation messages in JSON. The field raw_conversation is a JSONB field with list
 as default. After some research the append should be efficient. Also the JSONB field has a max size that seems
