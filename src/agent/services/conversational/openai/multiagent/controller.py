@@ -45,7 +45,7 @@ class MultiAgentController:
     def __init__(self, agent_map=CUSTOMER_SUPPORT_AGENT_MAP):
         self.agents = agent_map
 
-    def run(self, agent_name, message, history=None):
+    def run(self, agent_name, history=None):
         """
         Run an agent by name, pass message and optional history.
         Returns result and agent name.
@@ -53,16 +53,8 @@ class MultiAgentController:
         if agent_name not in self.agents:
             raise ValueError(f"Agent {agent_name} not found.")
 
-        # Format input
-        input_text = ""
-        if history:
-            for msg in history:
-                input_text += f"{msg['role'].capitalize()}: {msg['content']}\n"
-
-        input_text += f"User: {message}"
-
         # Run agent
-        result = Runner.run(self.agents[agent_name], input=input_text)
+        result = Runner.run(self.agents[agent_name], input=history)
 
         return result.final_output
 
@@ -71,15 +63,18 @@ class MultiAgentController:
         Main router logic → decide which agent to run first
         """
 
-        # → Simple rule based routing
         msg_lower = message.lower()
 
-        if "refund" in msg_lower or "billing" in msg_lower:
-            agent = "billing"
-        elif "urgent" in msg_lower or "asap" in msg_lower:
-            agent = "urgent"
+        if (
+            "order number" in msg_lower
+            or "problem" in msg_lower
+            or "urgency" in msg_lower
+        ):
+            agent = "info_structurer"
+        elif "follow up" in msg_lower or "asap" in msg_lower:
+            agent = "user_reassurance_and_send_off"
         else:
-            agent = "support"
+            agent = "triaging_and_info_collector"
 
         # Run chosen agent
         response = self.run(agent, message, history)

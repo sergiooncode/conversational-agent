@@ -78,11 +78,12 @@ doesn't abide by the instructions by default.
 - The agents, at least on OpenAI agents framework, are stateless. The handoffs feature is slightly misleading
 because it sounds as if the agents coordinate themselves. The consequence of the above is that they have to be
 coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
-why a multi-agent controller was added.
+why a multi-agent controller was added towards the end of the development and it needs more testing.
 
-- Regarding the context and memory of the agents the conversation history is passed to the agent that runs to
-generate an answer. That conversation history is formatted in a structured way like `User: <message>` or
-`Assistant: <message>`.
+- Regarding the context and memory of the agents the whole conversation history up to that point
+is passed as input to the agent that runs to generate an answer. That conversation history is formatted
+in a structured way like `User: <message>` or `Assistant: <message>`. In the prompts for the 3 agents
+is indicated that the conversation history is part of the input they receive.
 
 - Postgres and storing conversation messages in JSON. The field `raw_conversation` is a JSONB field with list
 as default. After doing some research the append of an item in that field should be efficient. Also the

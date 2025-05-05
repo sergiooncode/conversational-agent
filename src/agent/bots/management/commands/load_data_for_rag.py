@@ -19,7 +19,7 @@ class Command(BaseCommand):
             for row in reader:
                 answers.append(row["text"])
 
-        model = SentenceTransformer('all-MiniLM-L6-v2')  # small, fast, local
+        model = SentenceTransformer("all-MiniLM-L6-v2")  # small, fast, local
 
         answer_embeddings = model.encode(answers, normalize_embeddings=True)
 
