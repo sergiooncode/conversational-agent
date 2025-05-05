@@ -85,6 +85,9 @@ is passed as input to the agent that runs to generate an answer. That conversati
 in a structured way like `User: <message>` or `Assistant: <message>`. In the prompts for the 3 agents
 is indicated that the conversation history is part of the input they receive.
 
+- The agent `Customer Support Triaging and Info Collector` which is the first to run already receives the
+whole conversation history.
+
 - Postgres and storing conversation messages in JSON. The field `raw_conversation` is a JSONB field with list
 as default. After doing some research the append of an item in that field should be efficient. Also the
 JSONB field has a max size that seems high enough (1 GB).
