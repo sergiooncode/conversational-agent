@@ -76,7 +76,8 @@ reference it but it's not in the official docs which caused a bit of confusion d
 
 - Getting structured output as a response from agents based on LLM is not a trivial thing to accomplish. LLMs produce natural language 
 and, unless specific instructions are given to the model and features of the AI platform are used (specific prompt
-instructions, tools, output type), the model doesn't 100% abide by the instructions given in the instructions/prompt.
+instructions, and in the case of OpenAI Agents SDK tools and output type), the model doesn't 100% abide by the
+instructions given in the instructions/prompt.
 
 - The agents, at least on the OpenAI agents framework, are stateless. The handoffs feature in the SDK is slightly misleading
 because it sounds as if the agents coordinate themselves and hand off task to other agents but it's not 100% like that.
