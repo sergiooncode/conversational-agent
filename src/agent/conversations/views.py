@@ -38,7 +38,7 @@ class ConversationViewSet(viewsets.ViewSet):
         try:
             conversation = ConversationCreationManager(context=validated_data).create()
         except Exception as e:
-            logger.error("conversation_view_post", message=e)
+            logger.error("conversation_view_post", message=str(e))
             raise APIException()
 
         output_serializer = ConversationCreateOutputSerializer(instance=conversation)
@@ -55,14 +55,14 @@ class ConversationViewSet(viewsets.ViewSet):
                 context=validated_data
             ).partial_update(conversation_id=pk)
         except ConversationNotFound as e:
-            logger.warning("conversation_view_partial_update_not_found", message=e)
+            logger.warning("conversation_view_partial_update_not_found", message=str(e))
             raise NotFound(
                 detail="Conversation not found",
             )
         except OpenAIAPIkeyNotConfigured as e:
             raise NotAuthenticated(detail=e.message)
         except Exception as e:
-            logger.error("conversation_view_partial_update", message=e)
+            logger.error("conversation_view_partial_update", message=str(e))
             raise APIException()
 
         output_serializer = ConversationPartialUpdateOutputSerializer(
@@ -82,21 +82,20 @@ class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
             )
         except ConversationNotFound as e:
             logger.warning(
-                "conversation_view_post_followup_speech_not_found", message=e
+                "conversation_view_post_followup_speech_not_found", message=str(e)
             )
             raise NotFound(
                 detail="Conversation not found",
             )
         except ConversationSummaryDoesntExist as e:
             logger.warning(
-                "conversation_view_post_followup_speech_summary_not_found", message=e
+                "conversation_view_post_followup_speech_summary_not_found", message=str(e)
             )
             raise NotFound(
                 detail="Conversation summary not found",
             )
         except Exception as e:
-            import traceback;traceback.print_exc()
-            logger.error("conversation_view_post_followup_speech_post", message=e)
+            logger.error("conversation_view_post_followup_speech_post", message=str(e))
             raise APIException()
 
         return Response(
