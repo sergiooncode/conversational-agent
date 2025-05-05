@@ -34,8 +34,8 @@ defined are: `Customer Support Triaging and Info Collector`, `Customer Support I
 `Customer Support User Reassurance and Send Off`
 
 - In the TTS flow there is only one endpoint to create a speech recording with a follow-up to a given conversation
-for which a summary should exist. The recording file currently is saved in the local file system. This flow relies
-on the ElevenLabs API accessed through its Python client.
+for which a summary should exist. The recording file currently is saved in the local file system (but it could be
+changed to an S3 bucket in a following iteration). This flow relies on the ElevenLabs API accessed through its Python client.
 
 - This TTS flow is not fully defined since a user could only listen to the recording but nothing else like for example
 reply with a question. The recording is generated given a text based on the summary of the conversation and a static template
