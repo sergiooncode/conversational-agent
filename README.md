@@ -53,7 +53,7 @@ SDK. The summary is saved in a JSON field called `summary` as part of the conver
 
 ### Domain modelling:
 
-- The Intelligent Conversational Agent application was split in 4 domains: conversations, bots,
+- The Conversational agent service was split in 4 domains: conversations, bots,
 human users and prompts. Since Django was used, 4 applications were created so the 4 domains can
 evolve somehow independently although some of them are related to each other mainly through FK
 relations in DB.
