@@ -85,7 +85,7 @@ The consequence of the above is that they have to be
 coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
 why a multi-agent controller was added towards the end of the development although it needs more testing.
 
-- Regarding the context and memory of the agents the whole conversation history up to that point
+- Regarding the context and memory of the agents, the whole conversation history up to the point when the service gets a new message from the user
 is currently passed as input to the agent that runs to generate an answer. That conversation history is formatted
 in a structured way like `User: <message>` or `Assistant: <message>`. In the prompts for the 3 agents
 is indicated that the conversation history is part of the input they receive so the agent can rely on it.
