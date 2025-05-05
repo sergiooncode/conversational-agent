@@ -108,7 +108,16 @@ the embeddings in memory.
 - The RAG service would compare the user's comment with embeddings of
 the answers in the mentioned knowledge base using a simple LLM called all-MiniLM-L6-v2. A RAG service could be
 defined which would load answers embeddings in memory (in the future a Vector DB API service could be
-used), then the `ConversationPartialUpdateManager` would call that RAG service
+used), then the `ConversationPartialUpdateManager` would call that RAG service.
+
+- The implementation of multi turn memory was not implemented but the building blocks which are
+conversation history passed to each agent and proper multi agent routing are in place.
+
+- In order to implement multiple language support the language used in the user message should be detected
+using Python package `langdetect` or similar. Beforehand in the instructions/prompt of all agents
+a line like `If the user speaks French. Always respond in French.` (and same way for all languages supported)
+and then injecting a structured label like `[User Language: French]` or similar in the input to `Runner.run`
+of the agent
 
 
 ## Description of potential improvements
