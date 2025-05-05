@@ -92,13 +92,23 @@ a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 (frustrated, dissapointed, etc) in customer messages and enriching that message with the
 sentiment information in structured format (like [User Sentiment: highly frustrated]... + message).
 
-- I started working on RAG to improve the agent system answers. I found a 
+- I started working on RAG to improve the agent system answers. I found a knowledge base with customer
+support answers on Kaggle. I researched a "cheap" way to implement RAG using a OS LLM model and loading
+the embeddings in memory.
+
+- The RAG service would compare the user's comment with embeddings of
+the answers in the mentioned knowledge base using a simple LLM called all-MiniLM-L6-v2. A RAG service could be
+defined which would load answers embeddings in memory (in the future a Vector DB API service could be
+used), then the `ConversationPartialUpdateManager` would call that RAG service
+
 
 ## Description of potential improvements
 
 - Storing conversations as the product scales. Postgres JSONB field allows max size 1 GB.
 
-- The API has no authentication and that's not right. It's should be first identified who is t
+- The API has no authentication and that's not right. It's should be first identified who is the
+user and who is the client of the API, whoever owns the authentication method artifact (API key, token, etc)
+will be the client since through that authentication method we know is "them" using the API.
 
 - I had plans for the Prompt Django model but it's currently not used. The prompts for the 3-agent system are mainly static.
 If the prompts were to be generated dynamically maybe the Prompt Django model could come in handy. 

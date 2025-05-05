@@ -4,6 +4,7 @@ adrf
 elevenlabs
 gunicorn
 httptools
+numpy
 openai
 openai-agents
 pydantic
