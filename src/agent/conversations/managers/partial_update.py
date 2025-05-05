@@ -6,14 +6,13 @@ from uuid import UUID
 
 import structlog
 
-from agent.bots.models import BotFunction
 from agent.conversations.exceptions import ConversationNotFound
 from agent.conversations.models import Conversation
-from agent.prompts.models import BOT_FUNCTION_TO_PROMPT_MAP
 from agent.services.conversational.openai.agents import (
-    AgentService,
     CollectedInfo,
-    collected_information,
+)
+from agent.services.conversational.openai.multiagent.controller import (
+    CUSTOMER_SUPPORT_AGENT_MAP,
 )
 from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
@@ -122,32 +121,5 @@ class ConversationPartialUpdateManager:
             raise ConversationNotFound()
 
     async def _run_conversation_service(self, user_message: str):
-        agent_service_2 = AgentService(
-            name=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][2][
-                "name"
-            ],
-            instructions=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][
-                2
-            ]["instructions"],
-        )
-        agent_service_1 = AgentService(
-            name=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][1][
-                "name"
-            ],
-            instructions=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][
-                1
-            ]["instructions"],
-            tools=[collected_information],
-            output_type=CollectedInfo,
-            handoffs=[agent_service_2],
-        )
-        agent_service_0 = AgentService(
-            name=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][0][
-                "name"
-            ],
-            instructions=BOT_FUNCTION_TO_PROMPT_MAP[BotFunction.CUSTOMER_SUPPORT.value][
-                0
-            ]["instructions"],
-            handoffs=[agent_service_1],
-        )
-        return await agent_service_0.run(user_message)
+        agent = CUSTOMER_SUPPORT_AGENT_MAP["triaging_and_info_collector"]
+        return await agent.run(user_message)

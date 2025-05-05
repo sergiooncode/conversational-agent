@@ -1,5 +1,5 @@
 from unittest import mock
-from unittest.mock import ANY, MagicMock
+from unittest.mock import ANY, MagicMock, AsyncMock
 
 import pytest
 
@@ -101,9 +101,13 @@ class TestConversationsPartialUpdateViewSet:
         self, api_client, valid_bot_message
     ):
         with mock.patch(
-            "agent.conversations.managers.partial_update.AgentService"
-        ) as agent_service_mock:
-            agent_service_mock.run.return_value = async_return(valid_bot_message)
+            "agent.conversations.managers.partial_update.CUSTOMER_SUPPORT_AGENT_MAP"
+        ) as agent_map_mock:
+            mock_instance = AsyncMock()
+            agent_map_mock.__getitem__.return_value = mock_instance
+            result_mock = AsyncMock()
+            mock_instance.run.return_value = result_mock
+            mock_instance.run.return_value = async_return(valid_bot_message)
             response = api_client.patch(
                 path=f"{self.base_endpoint}16b6353d-f3ff-4abe-8b17-c4dd596171f9/",
                 data={"message": "i have an issue"},
