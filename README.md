@@ -80,9 +80,9 @@ because it sounds as if the agents coordinate themselves. The consequence of the
 coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
 why a multi-agent controller was added.
 
-- Postgres and storing conversation messages in JSON. The field raw_conversation is a JSONB field with list
-as default. After some research the append should be efficient. Also the JSONB field has a max size that seems
-high enough (1 GB).
+- Postgres and storing conversation messages in JSON. The field `raw_conversation` is a JSONB field with list
+as default. After doing some research the append of an item in that field should be efficient. Also the
+JSONB field has a max size that seems high enough (1 GB).
 
 - Async use in PATCH `/api/conversations/<id>/` endpoint because Runner.run is async. I realized later there is
 a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
