@@ -40,7 +40,7 @@ changed to an S3 bucket in a following iteration). This flow relies on the Eleve
 - This TTS flow is not fully defined since a user could only listen to the recording but nothing else like for example
 reply with a question. The recording is generated given a text based on the summary of the conversation and a static template
 which is very limited. More definition on the exact use case would be necessary and
-further development needed and maybe a proper call with a TTS agent could set up.
+further development needed and maybe a proper call with a TTS agent could set be up.
 
 - The conversations as the human user sends messages and the agent answers are stored in PostgreSQL.
 The summary is extracted by the agent `Customer Support Info Structurer` using the `tools` feature of OpenAI Agents
