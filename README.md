@@ -20,33 +20,30 @@ make test
 
 ## System architecture overview
 
-- The Conversational agent service was anchored in the Customer Support use case which can be seen
-in prompts and architecture of agents.
+- As the diagram in the following subsection below shows, the Conversational agent service is exposed through a REST API.
 
-- As the diagram below shows, the Conversational agent service is exposed through a REST API.
+- There are 2 sets of endpoints corresponding to 2 different flows: Conversational and Text-to-speech flows.
 
-- There are 2 sets of endpoints corresponding to 2 different flows: Conversational flow and Text-to-speech.
+- In the Conversational flow there is an endpoint to create a conversation between a human user and a bot, and
+an endpoint to send/add a message to a conversation which returns a response from the bot. This flow relies
+on the OpenAI API platform accessed through the Agents SDK.
 
-- In the Conversational flow there are endpoints to create a conversation between a human user and a bot, and
-a endpoint to send/add a message to a conversation which returns a response from the bot. This flow relies
-con the OpenAI Agents platform accessed through the Agents SDK.
-
-- The Conversational flow relies on a 3 agent architecture. Since the Customer Support was used the agents are:
-`Customer Support Triaging and Info Collector`, `Customer Support Info Structurer` and
+- The Conversational flow relies on a 3 agent architecture. Since the Customer Support is the use case the agents
+generated are: `Customer Support Triaging and Info Collector`, `Customer Support Info Structurer` and
 `Customer Support User Reassurance and Send Off`
 
-- In the TTS there is only one endpoint to generate a speech recording with a follow-up to that conversation
-and saves the recording file currently in the local file system. This flow relies on the ElevenLabs API
-accessed through its Python client.
+- In the TTS flow there is only one endpoint to create a speech recording with a follow-up to a given conversation
+for which a summary should exist. The recording file currently is saved in the local file system. This flow relies
+on the ElevenLabs API accessed through its Python client.
 
-- This TTS flow is not fully defined since a user could only listen to the recording but nothing else.
-The recording is generated given a text based on the summary of the conversation and a static template
-but this is very limited. More definition on the exact use case would be necessary and
-further development are needed and maybe a proper call with a TTS agent could set up.
+- This TTS flow is not fully defined since a user could only listen to the recording but nothing else like for example
+reply with a question. The recording is generated given a text based on the summary of the conversation and a static template
+which is very limited. More definition on the exact use case would be necessary and
+further development needed and maybe a proper call with a TTS agent could set up.
 
 - The conversations as the human user sends messages and the agent answers are stored in PostgreSQL.
-The summary is extracted by the agent `Customer Support Info Structurer` using the tools feature of OpenAI Agents
-SDK which then is saved in a summary JSON field of the conversation model instance.
+The summary is extracted by the agent `Customer Support Info Structurer` using the `tools` feature of OpenAI Agents
+SDK. The summary is saved in a JSON field called `summary` as part of the conversation model instance.
 
 ### Diagram
 
@@ -63,32 +60,37 @@ relations in DB.
 
 ## Explanation of key design decisions
 
-- Using OpenAI Agents SDK for conversation flow was a decision. I debated with myself between OpenAI and Anthropic
-platforms and I landed on OpenAI because both the Agents SDK official docs and the examples in the official
-OpenAI repo caught my eye.
+- The Conversational agent service is anchored in the Customer Support use case which can be seen
+in prompts and architecture of agents.
 
-- The SDK seems to be evolving and its documentation with it.
-Also it seems that they use have something called `agentkit` as part of the SDK and some examples online
-show it but it's not in the official docs.
+- Using OpenAI Agents SDK for conversation flow was a decision made based on some research where some
+sources praised the OpenAI and the LLM model gpt-4o specifically for the Customer Support use case. I debated with 
+myself between OpenAI and Anthropic platforms and I landed on OpenAI also because both the Agents SDK official
+docs and the examples in the official OpenAI repo caught my eye for the good.
 
-- Structure output from agents based on LLMs. LLM produce natural language and, unless specific instructions are
-given to it and features of the AI platform are used (specific prompt instructions, tools, output type),
-doesn't abide by the instructions by default.
+- The OpenAI Agents SDK seems to be evolving and its documentation with it.
+Also it seems that they used to have something called `agentkit` as part of the SDK and some examples online
+reference it but it's not in the official docs.
 
-- The agents, at least on OpenAI agents framework, are stateless. The handoffs feature is slightly misleading
-because it sounds as if the agents coordinate themselves. The consequence of the above is that they have to be
+- Structured output from agents based on LLMs is not a trivial thing to accomplish. LLMd produce natural language 
+and, unless specific instructions are given to the model and features of the AI platform used (specific prompt
+instructions, tools, output type), the model doesn't 100% abide by the instructions by default.
+
+- The agents, at least on the OpenAI agents framework, are stateless. The handoffs feature in the SDK is slightly misleading
+because it sounds as if the agents coordinate themselves and hand off task to other agents but it's not 100% like that.
+The consequence of the above is that they have to be
 coordinated so the right agent is used to give an answer even if the handoffs feature is used. That's the reason
-why a multi-agent controller was added towards the end of the development and it needs more testing.
+why a multi-agent controller was added towards the end of the development although it needs more testing.
 
 - Regarding the context and memory of the agents the whole conversation history up to that point
-is passed as input to the agent that runs to generate an answer. That conversation history is formatted
+is currently passed as input to the agent that runs to generate an answer. That conversation history is formatted
 in a structured way like `User: <message>` or `Assistant: <message>`. In the prompts for the 3 agents
-is indicated that the conversation history is part of the input they receive.
+is indicated that the conversation history is part of the input they receive so the agent can rely on it.
 
 - The agent `Customer Support Triaging and Info Collector` which is the first to run already receives the
 whole conversation history.
 
-- Postgres and storing conversation messages in JSON. The field `raw_conversation` is a JSONB field with list
+- I use Postgres to store conversation messages in a JSONB field. The field `raw_conversation` is a JSONB field with list
 as default. After doing some research the append of an item in that field should be efficient. Also the
 JSONB field has a max size that seems high enough (1 GB).
 
