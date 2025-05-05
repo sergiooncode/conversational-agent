@@ -5,7 +5,7 @@ from adrf import viewsets
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.exceptions import APIException, NotFound
+from rest_framework.exceptions import APIException, NotFound, NotAuthenticated
 
 from agent.conversations.exceptions import ConversationNotFound
 from agent.conversations.managers.creation import (
@@ -21,6 +21,7 @@ from agent.conversations.serializers.output import (
     ConversationCreateOutputSerializer,
     ConversationPartialUpdateOutputSerializer,
 )
+from agent.services.exceptions import OpenAIAPIkeyNotConfigured
 
 logger = structlog.get_logger(__name__)
 
@@ -55,6 +56,8 @@ class ConversationViewSet(viewsets.ViewSet):
             raise NotFound(
                 detail="Conversation not found",
             )
+        except OpenAIAPIkeyNotConfigured as e:
+            raise NotAuthenticated(detail=e.message)
         except Exception as e:
             logger.error("conversation_view_partial_update", message=e)
             raise APIException()
@@ -72,9 +75,12 @@ class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
     def post(self, request: Request, pk: UUID, *args, **kwargs):
         try:
             speech_recording_id = ConversationCreateFollowupSpeechManager().create(
-                conversation_id=pk)
+                conversation_id=pk
+            )
         except ConversationNotFound as e:
-            logger.warning("conversation_view_post_followup_speech_not_found", message=e)
+            logger.warning(
+                "conversation_view_post_followup_speech_not_found", message=e
+            )
             raise NotFound(
                 detail="Conversation not found",
             )

@@ -13,6 +13,7 @@ from agent.services.exceptions import (
     OpenAIAgentNotConfiguredException,
     OpenAIAgentRuntimeException,
     OpenAIAgentEmptyUserInputException,
+    OpenAIAPIkeyNotConfigured,
 )
 
 logger = structlog.get_logger(__name__)
@@ -91,4 +92,6 @@ class AgentService:
             return result
         except Exception as e:
             logger.warning("openai_llm_agent_service", message=str(e))
+            if "invalid_api_key" in e.code:
+                raise OpenAIAPIkeyNotConfigured()
             raise OpenAIAgentRuntimeException()

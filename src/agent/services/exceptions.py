@@ -12,3 +12,7 @@ class OpenAIAgentRuntimeException(BaseServiceException):
 
 class OpenAIAgentEmptyUserInputException(BaseServiceException):
     message = "OpenAI Agent received"
+
+
+class OpenAIAPIkeyNotConfigured(BaseServiceException):
+    message = "OpenAI API key not configured"

@@ -28,7 +28,8 @@ class ConversationPartialUpdateManager:
         conversation_to_update = await self._get_conversation(conversation_id)
         sentiment_labelled_user_message = self._detect_and_add_sentiment_label()
         conversation_history = self._get_stringified_conversation_history(
-            conversation_to_update, sentiment_labelled_user_message)
+            conversation_to_update, sentiment_labelled_user_message
+        )
         logger.info("conversation history")
         logger.info(conversation_history)
 
@@ -58,7 +59,8 @@ class ConversationPartialUpdateManager:
         return conversation_history_text
 
     def _get_stringified_conversation_history(
-            self, conversation: Conversation, user_message: str):
+        self, conversation: Conversation, user_message: str
+    ):
         conversation_history = conversation.raw_conversation
         return self._stringify_conversation_history(conversation_history, user_message)
 
