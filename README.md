@@ -137,7 +137,12 @@ user and who is the client of the API, whoever owns the authentication method ar
 will be the client since through that authentication method we know is an authenticated client of the API.
 
 - I had plans for the Prompt Django model but it's currently not used. The prompts for the 3-agent system are mainly static.
-If the prompts were to be generated dynamically maybe the Prompt Django model could come in handy. 
+If the prompts were to be generated dynamically maybe the Prompt Django model could come in handy.
+
+- The prompts are key and are dependent on features like sentiment analysis, RAG or multi-language
+since we need to indicate the LLM that additional information was added to the input for exmample a label
+with the user sentiment or relevant answers from RAG. Currently the prompts are static strings so
+a refactor would be needed to build the prompts depending on features or other criteria.
 
 - Increasing the test coverage would be necessary.
 
