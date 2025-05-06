@@ -94,6 +94,15 @@ is indicated that the conversation history is part of the input they receive so 
 - The agent `Customer Support Triaging and Info Collector` which is the first to run already receives the
 whole conversation history.
 
+- I dedided to use PostgreSQL as the database because the raw conversations and summary have to
+be stored in JSON format and this database has a JSONB field which can be used efficiently for
+that data format.
+
+- Django is used for serving the API and modelling the domain. The reason to use this framework was
+because it was decided to use PostgreSQL as database and the integration with Django ORM is battle-tested.
+Also Django and dependencies of its ecosystem like djangorestframework make the REST
+machinery very straightforward.
+
 - I use Postgres to store conversation messages in a JSONB field, the field is called `raw_conversation` and it has a list
 as default so as the application runs messages are appended. After doing some research that append of an item which
 is such like `{"user": "<message>", "assistant": "<message>"}` seems to be efficient from a performance point of
