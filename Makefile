@@ -5,6 +5,9 @@ app_env = local
 target = full
 tag = latest
 
+.env.local:
+	touch .env.local
+
 .PHONY: up
 up: .env.local
 	$(COMPOSE_CMD) up -d
