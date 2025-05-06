@@ -16,7 +16,7 @@ Note: an environment variable OPENAPI_API_KEY with a valid API key for the OpenA
 environment variable ELEVEN_LABS_API_KEY with a valid API key for the
 Eleven Labs API is necessary to use the Text-to-Speech endpoint on
 `/api/conversations/<conversation_id>/follow-up-speech/`. They can be added in the file `.env.local` after creating
-the file doing `touch .env.local`. The `make recreate` above should create an empty `.env.local` file. 
+the file doing `touch .env.local`. The comamnd `make recreate` above will create an empty `.env.local` file. 
 
 Note: there is a `How to test` section with cURL commands to test.
 
