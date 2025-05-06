@@ -215,7 +215,8 @@ it can be played:
 
 ## Sample conversations demonstrating the bot's capabilities
 
-- Sample conversation between the Customer Support agent and a human user:
+- Sample conversation between the Customer Support agent and a human user including
+a frustration label having run sentiment analysis:
 
 Note: the raw_conversation field is a list and the messages order is the lower the index in the list the earlier the message
 
