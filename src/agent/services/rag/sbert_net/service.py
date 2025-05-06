@@ -34,7 +34,7 @@ class RagService:
         relevant_answers = [self._raw_answers[i] for i in top_indices]
 
         context_text = "\n".join(
-            [f"Relevant answer: {ans}" for ans in relevant_answers]
+            [f"Relevant answers: {ans}" for ans in relevant_answers]
         )
 
         return f"{context_text}\n\nUser: {user_message}"

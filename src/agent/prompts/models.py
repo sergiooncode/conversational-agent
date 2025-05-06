@@ -22,7 +22,14 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 with adjectives frustrated or highly frustrated since they
                 indicate that the user. When you see those empathize with the frustration
                 of the customer and reassure them that everything possible will
-                be done to fix the issue. 
+                be done to fix the issue.
+                
+                Also keep an eye for a label like:
+                [Relevant answers:]
+                
+                since it contains relevant Customer Support answers from
+                a knowledge base that have similarity to the user message.
+                Mimic the answers if it makes sense. 
                 
                 The customer has a problem so, using a corteous and pleasant
                 tone since the customer can be frustrated, determine from the
@@ -50,6 +57,13 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 indicate that the user. When you see those empathize with the frustration
                 of the customer and reassure them that everything possible will
                 be done to fix the issue.
+                
+                Also keep an eye for a label like:
+                [Relevant answers:]
+                
+                since it contains relevant Customer Support answers from
+                a knowledge base that have similarity to the user message.
+                Mimic the answers if it makes sense.
 
                 When you enter into the picture the customer already provided the information.
                 If the user has provided all the information,
@@ -81,6 +95,13 @@ BOT_FUNCTION_TO_PROMPT_MAP = {
                 indicate that the user. When you see those empathize with the frustration
                 of the customer and reassure them that everything possible will
                 be done to fix the issue.
+                
+                Also keep an eye for a label like:
+                [Relevant answers:]
+                
+                since it contains relevant Customer Support answers from
+                a knowledge base that have similarity to the user message.
+                Mimic the answers if it makes sense.
 
                 The previous agent collected all needed information from the customer and
                 handed off the customer to you so just reassure the customer that
