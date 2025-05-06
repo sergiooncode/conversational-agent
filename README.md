@@ -103,13 +103,16 @@ because it was decided to use PostgreSQL as database and the integration with Dj
 Also Django and dependencies of its ecosystem like djangorestframework make the REST
 machinery very straightforward.
 
+- Async is used in PATCH `/api/conversations/<id>/` endpoint because `Runner.run` is async. I realized later there is
+a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
+
+- Since async was used for the endpoint mentioned above ASGI (instead of WSGI) was used to get the benefits of
+async and Uvicorn as ASGI server.
+
 - I use Postgres to store conversation messages in a JSONB field, the field is called `raw_conversation` and it has a list
 as default so as the application runs messages are appended. After doing some research that append of an item which
 is such like `{"user": "<message>", "assistant": "<message>"}` seems to be efficient from a performance point of
 view. Also the JSONB field has a max size that seems high enough (1 GB).
-
-- Async is used in PATCH `/api/conversations/<id>/` endpoint because `Runner.run` is async. I realized later there is
-a Runner.run_sync so making the endpoint async maybe was not 100% necessary.
 
 ### Bonus points
 
