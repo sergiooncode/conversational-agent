@@ -2,13 +2,6 @@
 
 ## Setup instructions
 
-Note: an environment variable OPENAPI_API_KEY with a valid API key for the OpenAI API platform is necessary. Also an
-environment variable ELEVEN_LABS_API_KEY is necessary to use Text-to-Speech on the
-`/api/conversations/<conversation_id>/follow-up-speech/` endpoint. They can be added in file .env.local after creating
-the file with `touch .env.local`
-
-Note: there is a `How to test` section with cURL commands to test.
-
 - Run command:
 ```
 make recreate
@@ -18,6 +11,14 @@ make recreate
 ```
 make test
 ```
+
+Note: an environment variable OPENAPI_API_KEY with a valid API key for the OpenAI API platform is necessary. Also an
+environment variable ELEVEN_LABS_API_KEY with a valid API key for the
+Eleven Labs API is necessary to use the Text-to-Speech endpoint on
+`/api/conversations/<conversation_id>/follow-up-speech/`. They can be added in the file `.env.local` after creating
+the file doing `touch .env.local`. The `make recreate` above should create an empty `.env.local` file. 
+
+Note: there is a `How to test` section with cURL commands to test.
 
 ## System architecture overview
 
