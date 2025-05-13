@@ -238,3 +238,8 @@ of Customer Support on Twitter:
 ![Sample 1](blueprint/conversation_capabilities_rag_sample.png)
 
 
+## Edit: Deterministic vs. Non-Deterministic Approaches for LLM Agents and Workflows
+
+![Sample 1](blueprint/hybrid_flow.png)
+
+
