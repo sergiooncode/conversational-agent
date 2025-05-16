@@ -1,6 +1,6 @@
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List
 from uuid import UUID
 
@@ -13,6 +13,7 @@ from agent.services.conversational.openai.agents import (
 )
 from agent.services.conversational.openai.multiagent.controller import (
     CUSTOMER_SUPPORT_AGENT_MAP,
+    MultiAgentController,
 )
 from agent.services.rag.sbert_net.service import RagService
 from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
@@ -23,20 +24,17 @@ logger = structlog.get_logger(__name__)
 @dataclass
 class ConversationPartialUpdateManager:
     context: Dict
+    _conversation_history: str = field(init=False)
 
     async def partial_update(self, conversation_id: UUID):
         conversation_to_update = await self._get_conversation(conversation_id)
-        sentiment_labelled_user_message = self._detect_and_add_sentiment_label()
-        rag_enriched_sentiment_labelled_user_msg = self._rag_enrich_with_answers(
-            sentiment_labelled_user_message
-        )
-        conversation_history = self._get_stringified_conversation_history(
-            conversation_to_update, rag_enriched_sentiment_labelled_user_msg
+        self._conversation_history = self._get_stringified_conversation_history(
+            conversation_to_update, self.context["message"]
         )
         logger.info("conversation history")
-        logger.info(conversation_history)
+        logger.info(self._conversation_history)
 
-        result = await self._run_conversation_service(conversation_history)
+        result = await self._run_conversation_service(self.context["message"])
         logger.info("result.final_output", message=result.final_output)
 
         summary = self._parse_summary(result)
@@ -44,7 +42,7 @@ class ConversationPartialUpdateManager:
             conversation_to_update,
             result,
             summary,
-            rag_enriched_sentiment_labelled_user_msg,
+            self.context["message"],
         )
 
         if isinstance(result.final_output, CollectedInfo):
@@ -132,5 +130,18 @@ class ConversationPartialUpdateManager:
             raise ConversationNotFound()
 
     async def _run_conversation_service(self, user_message: str):
-        agent = CUSTOMER_SUPPORT_AGENT_MAP["triaging_and_info_collector"]
-        return await agent.run(user_message)
+        controller = MultiAgentController(
+            {
+                "triaging_and_info_collector": CUSTOMER_SUPPORT_AGENT_MAP[
+                    "triaging_and_info_collector"
+                ],
+                "info_structurer": CUSTOMER_SUPPORT_AGENT_MAP["info_structurer"],
+                "user_reassurance_and_send_off": CUSTOMER_SUPPORT_AGENT_MAP[
+                    "user_reassurance_and_send_off"
+                ],
+            }
+        )
+        agent_used, response = await controller.route(
+            user_message, history=self._conversation_history
+        )
+        return response
