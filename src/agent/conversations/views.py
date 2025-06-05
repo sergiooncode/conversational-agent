@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.exceptions import APIException, NotFound, NotAuthenticated
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 from agent.conversations.exceptions import (
     ConversationNotFound,
@@ -102,3 +104,17 @@ class ConversationCreateFollowupSpeechViewSet(viewsets.ViewSet):
         return Response(
             data={"speech_id": speech_recording_id}, status=status.HTTP_201_CREATED
         )
+
+
+@csrf_exempt
+def twiml_stream(request):
+    response = """
+    <Response>
+        <Start>
+            <Stream url="wss://3787-2a0c-5a82-504-9300-645e-d42d-7a74-51f7.ngrok-free.app/ws/audio/" />
+        </Start>
+        <Say>This is Sergios test, please start talking now.</Say>
+        <Pause length="30"/>
+    </Response>
+    """
+    return HttpResponse(response, content_type="text/xml")

@@ -16,42 +16,69 @@ anyio==4.9.0
     #   sse-starlette
     #   starlette
 asgiref==3.8.1
-    # via django
+    # via
+    #   channels
+    #   daphne
+    #   django
 async-property==0.2.2
     # via adrf
+attrs==25.3.0
+    # via
+    #   service-identity
+    #   twisted
+autobahn==24.4.2
+    # via daphne
+automat==25.4.16
+    # via twisted
 certifi==2025.4.26
     # via
     #   httpcore
     #   httpx
     #   requests
+cffi==1.17.1
+    # via cryptography
+channels[daphne]==4.2.2
+    # via -r requirements/base.in
 charset-normalizer==3.4.1
     # via requests
 click==8.1.8
     # via uvicorn
 colorama==0.4.6
     # via griffe
+constantly==23.10.4
+    # via twisted
+contourpy==1.3.2
+    # via matplotlib
+cryptography==44.0.3
+    # via
+    #   autobahn
+    #   pyopenssl
+    #   service-identity
+cycler==0.12.1
+    # via matplotlib
+daphne==4.1.2
+    # via channels
 distro==1.9.0
     # via openai
 django==5.2
     # via
     #   -r requirements/base.in
     #   adrf
+    #   channels
+    #   django-csp
     #   djangorestframework
+django-csp==4.0
+    # via -r requirements/base.in
 django-environ==0.12.0
     # via -r requirements/base.in
 djangorestframework==3.16.0
     # via adrf
 elevenlabs==1.57.0
     # via -r requirements/base.in
-filelock==3.18.0
-    # via
-    #   huggingface-hub
-    #   torch
-    #   transformers
-fsspec==2025.3.2
-    # via
-    #   huggingface-hub
-    #   torch
+fastapi==0.115.12
+    # via -r requirements/base.in
+fonttools==4.58.0
+    # via matplotlib
 griffe==1.7.3
     # via openai-agents
 gunicorn==23.0.0
@@ -73,35 +100,38 @@ httpx==0.28.1
     #   openai
 httpx-sse==0.4.0
     # via mcp
-huggingface-hub==0.30.2
+hyperlink==21.0.0
     # via
-    #   sentence-transformers
-    #   tokenizers
-    #   transformers
+    #   autobahn
+    #   twisted
 idna==3.10
     # via
     #   anyio
     #   httpx
+    #   hyperlink
     #   requests
-jinja2==3.1.6
-    # via torch
+    #   twisted
+incremental==24.7.2
+    # via twisted
 jiter==0.9.0
     # via openai
 joblib==1.5.0
-    # via scikit-learn
-markupsafe==3.0.2
-    # via jinja2
+    # via noisereduce
+kiwisolver==1.4.8
+    # via matplotlib
+matplotlib==3.10.3
+    # via noisereduce
 mcp==1.6.0
     # via openai-agents
-mpmath==1.3.0
-    # via sympy
-networkx==3.4.2
-    # via torch
-numpy==1.26.4
+noisereduce==3.0.3
+    # via -r requirements/base.in
+numpy==2.2.5
     # via
-    #   scikit-learn
+    #   -r requirements/base.in
+    #   contourpy
+    #   matplotlib
+    #   noisereduce
     #   scipy
-    #   transformers
 openai==1.76.2
     # via
     #   -r requirements/base.in
@@ -110,17 +140,26 @@ openai-agents==0.0.14
     # via -r requirements/base.in
 packaging==25.0
     # via
+    #   django-csp
     #   gunicorn
-    #   huggingface-hub
-    #   transformers
+    #   matplotlib
 pillow==11.2.1
-    # via sentence-transformers
+    # via matplotlib
 psycopg2-binary==2.9.10
     # via -r requirements/base.in
+pyasn1==0.6.1
+    # via
+    #   pyasn1-modules
+    #   service-identity
+pyasn1-modules==0.4.2
+    # via service-identity
+pycparser==2.22
+    # via cffi
 pydantic==2.11.4
     # via
     #   -r requirements/base.in
     #   elevenlabs
+    #   fastapi
     #   mcp
     #   openai
     #   openai-agents
@@ -131,30 +170,26 @@ pydantic-core==2.33.2
     #   pydantic
 pydantic-settings==2.9.1
     # via mcp
+pydub==0.25.1
+    # via -r requirements/base.in
+pyopenssl==25.0.0
+    # via twisted
+pyparsing==3.2.3
+    # via matplotlib
+python-dateutil==2.9.0.post0
+    # via matplotlib
 python-dotenv==1.1.0
     # via pydantic-settings
-pyyaml==6.0.2
-    # via
-    #   huggingface-hub
-    #   transformers
-regex==2024.11.6
-    # via transformers
 requests==2.32.3
     # via
     #   elevenlabs
-    #   huggingface-hub
     #   openai-agents
-    #   transformers
-safetensors==0.5.3
-    # via transformers
-scikit-learn==1.6.1
-    # via sentence-transformers
-scipy==1.15.2
-    # via
-    #   scikit-learn
-    #   sentence-transformers
-sentence-transformers==4.1.0
-    # via -r requirements/base.in
+scipy==1.15.3
+    # via noisereduce
+service-identity==24.2.0
+    # via twisted
+six==1.17.0
+    # via python-dateutil
 sniffio==1.3.1
     # via
     #   anyio
@@ -165,40 +200,32 @@ sse-starlette==2.3.3
     # via mcp
 starlette==0.46.2
     # via
+    #   fastapi
     #   mcp
     #   sse-starlette
 structlog==25.3.0
     # via -r requirements/base.in
-sympy==1.14.0
-    # via torch
-threadpoolctl==3.6.0
-    # via scikit-learn
-tokenizers==0.21.1
-    # via transformers
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.1.2
-    # via sentence-transformers
 tqdm==4.67.1
     # via
-    #   huggingface-hub
+    #   noisereduce
     #   openai
-    #   sentence-transformers
-    #   transformers
-transformers==4.51.3
-    # via sentence-transformers
+twisted[tls]==24.11.0
+    # via daphne
+txaio==23.1.1
+    # via autobahn
 types-requests==2.32.0.20250328
     # via openai-agents
 typing-extensions==4.13.2
     # via
     #   anyio
     #   elevenlabs
-    #   huggingface-hub
+    #   fastapi
     #   openai
     #   openai-agents
     #   pydantic
     #   pydantic-core
-    #   sentence-transformers
-    #   torch
+    #   pyopenssl
+    #   twisted
     #   typing-inspection
 typing-inspection==0.4.0
     # via
@@ -219,3 +246,8 @@ uvloop==0.21.0
     # via -r requirements/base.in
 websockets==15.0.1
     # via elevenlabs
+zope-interface==7.2
+    # via twisted
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

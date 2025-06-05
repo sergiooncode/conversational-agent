@@ -29,7 +29,9 @@ SECRET_KEY = "django-insecure-!l2*i=we328-ybftili!mh9^5!x19wg0a0g7jem!upe+wq#dzx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "3787-2a0c-5a82-504-9300-645e-d42d-7a74-51f7.ngrok-free.app"
+]
 
 
 # Application definition
@@ -41,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "channels",
+    "csp",
     # agent
     "agent.bots.apps.BotsConfig",
     "agent.prompts.apps.PromptsConfig",
@@ -56,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = "agent.urls.public"
@@ -75,7 +80,13 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "agent.asgi.application"
+ASGI_APPLICATION = "agent.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"  # Use Redis in production
+    }
+}
 
 
 # Database
@@ -159,6 +170,8 @@ LOGGING = {
         "pydig.resolver": {"handlers": ["null"], "propagate": False},
     },
 }
+
+CONTENT_SECURITY_POLICY = {'DIRECTIVES': {'connect-src': ("'self'", 'chrome://resources',' chrome://theme', 'ws://localhost:8001')}}
 
 # OPEN AI
 OPENAPI_API_KEY = env.str("OPENAPI_API_KEY", default="key")

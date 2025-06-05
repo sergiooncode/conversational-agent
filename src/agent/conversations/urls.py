@@ -3,6 +3,7 @@ from django.urls import path
 from agent.conversations.views import (
     ConversationCreateFollowupSpeechViewSet,
     ConversationViewSet,
+    twiml_stream,
 )
 
 urlpatterns = [
@@ -20,5 +21,10 @@ urlpatterns = [
         "conversations/<uuid:pk>/follow-up-speech/",
         ConversationCreateFollowupSpeechViewSet.as_view({"post": "post"}),
         name="conversations_followupspeech_create",
+    ),
+    path(
+        "conversations/voice/twiml/",
+        twiml_stream,
+        name="conversations_voice_stream",
     ),
 ]

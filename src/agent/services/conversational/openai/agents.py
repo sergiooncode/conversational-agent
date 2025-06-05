@@ -54,6 +54,7 @@ class AgentService:
         output_type: str | None = None,
         output_schema_strict: bool | None = None,
     ):
+        self._name = name
         if any(arg is None for arg in [name, instructions]):
             raise OpenAIAgentNotConfiguredException()
 
@@ -76,6 +77,10 @@ class AgentService:
     @property
     def agent(self):
         return self._agent
+
+    @property
+    def name(self):
+        return self._name
 
     def _on_handoff_call(self, *args):
         logger.info("agent_service_on_handoff_call", message=args)
