@@ -32,7 +32,7 @@ def twilio_ulaw_to_wav(raw_audio_bytes):
         sample_width=1,  # 8-bit μ-law
         frame_rate=8000,  # 8 kHz sample rate (Twilio)
         channels=1,
-        format="ulaw"
+        format="ulaw",
     )
 
     # Convert to 16-bit PCM WAV at 16kHz (common speech format)
@@ -77,16 +77,16 @@ async def transcribe_audio(audio_bytes: bytes):
     with open("../resources/final_audio_for_transcription.wav", "wb") as f:
         f.write(wav_16k.read())
 
-    response = client.speech_to_text.convert(
-        model_id=MODEL_ID,
-        file=wav_16k
-    )
+    response = client.speech_to_text.convert(model_id=MODEL_ID, file=wav_16k)
     return response
 
 
 async def synthesize_speech(text: str):
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}/stream"
-    headers = {"xi-api-key": settings.ELEVEN_LABS_API_KEY, "Content-Type": "application/json"}
+    headers = {
+        "xi-api-key": settings.ELEVEN_LABS_API_KEY,
+        "Content-Type": "application/json",
+    }
     payload = {
         "text": text,
         "model_id": "eleven_monolingual_v1",

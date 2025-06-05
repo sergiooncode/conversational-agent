@@ -15,6 +15,7 @@ from agent.services.conversational.openai.multiagent.controller import (
     CUSTOMER_SUPPORT_AGENT_MAP,
     MultiAgentController,
 )
+
 # from agent.services.rag.sbert_net.service import RagService
 from agent.services.sentiment_analysis.detect import SentimentAnalysisDetectionService
 
@@ -54,7 +55,7 @@ class ConversationPartialUpdateManager:
 
         return result.final_output
 
-    #def _rag_enrich_with_answers(self, user_message: str):
+    # def _rag_enrich_with_answers(self, user_message: str):
     #    service = RagService()
     #    return service.get_relevant_answers(user_message)
 

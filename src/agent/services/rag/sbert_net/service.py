@@ -1,13 +1,13 @@
-#import csv
+# import csv
 #
-#import numpy as np
+# import numpy as np
 #
-#from sentence_transformers import SentenceTransformer, util
+# from sentence_transformers import SentenceTransformer, util
 #
-#ANSWERS_TO_RETRIEVE_MAX_NUMBER = 5
+# ANSWERS_TO_RETRIEVE_MAX_NUMBER = 5
 #
 #
-#class RagService:
+# class RagService:
 #    def __init__(self):
 #        import os
 #

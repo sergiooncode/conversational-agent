@@ -29,9 +29,7 @@ SECRET_KEY = "django-insecure-!l2*i=we328-ybftili!mh9^5!x19wg0a0g7jem!upe+wq#dzx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "3787-2a0c-5a82-504-9300-645e-d42d-7a74-51f7.ngrok-free.app"
-]
+ALLOWED_HOSTS = ["3787-2a0c-5a82-504-9300-645e-d42d-7a74-51f7.ngrok-free.app"]
 
 
 # Application definition
@@ -50,6 +48,7 @@ INSTALLED_APPS = [
     "agent.prompts.apps.PromptsConfig",
     "agent.conversations.apps.ConversationsConfig",
     "agent.human_users.apps.HumanUsersConfig",
+    "agent.job_opportunities.apps.JobOpportunitiesConfig",
 ]
 
 MIDDLEWARE = [
@@ -171,7 +170,16 @@ LOGGING = {
     },
 }
 
-CONTENT_SECURITY_POLICY = {'DIRECTIVES': {'connect-src': ("'self'", 'chrome://resources',' chrome://theme', 'ws://localhost:8001')}}
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "connect-src": (
+            "'self'",
+            "chrome://resources",
+            " chrome://theme",
+            "ws://localhost:8001",
+        )
+    }
+}
 
 # OPEN AI
 OPENAPI_API_KEY = env.str("OPENAPI_API_KEY", default="key")
